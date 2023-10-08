@@ -1,6 +1,6 @@
 mod CardUtils {
     use array::ArrayTrait;
-    use RealmsLastStand::components::card::Card;
+    use DragonsNest::components::card::Card;
 
     fn get_card(id: u16) -> Card {
         if id == 1 {

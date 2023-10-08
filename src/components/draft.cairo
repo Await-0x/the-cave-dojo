@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use RealmsLastStand::components::card::Card;
+use DragonsNest::components::card::Card;
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Draft {
@@ -7,7 +7,8 @@ struct Draft {
     id: usize,
     #[key]
     player: ContractAddress,
-    card_count: u8
+    card_count: u8,
+    active: u8
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
