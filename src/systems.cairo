@@ -1,2 +1,2 @@
-mod select_card;
-mod start_draft;
+mod draft_card;
+mod start_game;

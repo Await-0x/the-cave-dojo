@@ -1,30 +1,24 @@
 use starknet::ContractAddress;
-use DragonsNest::components::card::Card;
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Draft {
     #[key]
-    id: usize,
-    #[key]
-    player: ContractAddress,
+    game_id: usize,
     card_count: u8,
-    active: u8
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
-struct DraftCard {
+struct DraftOption {
     #[key]
-    draft_id: usize,
-    #[key]
-    number: u8,
-    card: Card,
-}
-
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
-struct DraftChoice {
-    #[key]
-    draft_id: usize,
+    game_id: usize,
     #[key]
     number: u8,
-    card: Card,
+    // Card info
+    card_id: u16,
+    name: felt252,
+    card_type: felt252,
+    cost: u8,
+    attack: u8,
+    health: u8,
+    tag: felt252,
 }
