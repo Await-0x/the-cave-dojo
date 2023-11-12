@@ -1,4 +1,4 @@
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Serde)]
 struct Card {
     #[key]
     id: u16,
@@ -7,5 +7,4 @@ struct Card {
     cost: u8,
     attack: u8,
     health: u8,
-    tag: felt252,
 }

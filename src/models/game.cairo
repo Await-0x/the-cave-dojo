@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
-use DragonsNest::components::card::Card;
+use thecave::models::card::Card;
 
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
+#[derive(Model, Copy, Drop, Serde)]
 struct Game {
     #[key]
     id: usize,
@@ -9,5 +9,6 @@ struct Game {
     active: bool,
     in_draft: bool,
     in_battle: bool,
-    battles_won: u16
+    battles_won: u16,
+    entropy: usize
 }

@@ -1,20 +1,14 @@
 mod DraftUtils {
-    use DragonsNest::components::draft::{DraftOption};
-    use DragonsNest::utils::cards::CardUtils::{get_card};
+    use thecave::models::draft::{DraftOption};
+    use thecave::utils::cards::CardUtils::{get_card};
 
-    fn get_draft_option(game_id: usize, number: u8, card_id: u16) -> DraftOption {
+    fn get_draft_option(game_id: usize, option_id: u8, card_id: u16) -> DraftOption {
         let card = get_card(card_id);
 
         DraftOption {
             game_id,
-            number,
-            card_id: card.id,
-            name: card.name,
-            card_type: card.card_type,
-            cost: card.cost,
-            attack: card.attack,
-            health: card.health,
-            tag: card.tag,
+            option_id,
+            card_id,
         }
     }
 }

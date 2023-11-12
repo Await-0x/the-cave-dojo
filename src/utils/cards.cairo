@@ -1,7 +1,7 @@
 mod CardUtils {
     use array::ArrayTrait;
-    use DragonsNest::components::card::{Card};
-    use DragonsNest::constants::{CardTypes,CardTags};
+    use thecave::models::card::{Card};
+    use thecave::constants::{CardTypes};
 
     fn get_card(id: u16) -> Card {
         if id == 1 {
@@ -12,7 +12,6 @@ mod CardUtils {
                 cost: 6,
                 attack: 6,
                 health: 6,
-                tag: CardTags::BEAST
             };
         }
         
@@ -24,7 +23,6 @@ mod CardUtils {
                 cost: 6,
                 attack: 6,
                 health: 6,
-                tag: CardTags::BEAST
             };
         }
         
@@ -36,7 +34,6 @@ mod CardUtils {
                 cost: 6,
                 attack: 6,
                 health: 6,
-                tag: CardTags::UNDEAD
             };
         }
         
@@ -48,7 +45,6 @@ mod CardUtils {
                 cost: 6,
                 attack: 6,
                 health: 6,
-                tag: CardTags::HUMAN
             };
         }
         
@@ -60,7 +56,6 @@ mod CardUtils {
                 cost: 6,
                 attack: 6,
                 health: 6,
-                tag: CardTags::BEAST
             };
         }
 
@@ -72,7 +67,6 @@ mod CardUtils {
                 cost: 0,
                 attack: 0,
                 health: 0,
-                tag: CardTags::BEAST
             };
         }
     }
