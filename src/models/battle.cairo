@@ -48,8 +48,9 @@ struct HandCard {
 #[derive(Model, Copy, Drop, Serde)]
 struct DeckCard {
     #[key]
-    id: u16,
     battle_id: usize,
+    #[key]
+    number: u16,
     card_id: u16,
 }
 

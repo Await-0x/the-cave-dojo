@@ -5,6 +5,7 @@ use array::ArrayTrait;
 #[starknet::interface]
 trait IGameActions<TContractState> {
     fn start_draft(self: @TContractState);
+    fn start_battle(self: @TContractState, game_id: usize);
 }
 
 #[dojo::contract]
