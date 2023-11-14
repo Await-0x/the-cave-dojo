@@ -16,6 +16,7 @@ mod battle_actions {
     use thecave::models::game::Game;
     use thecave::models::draft::{Draft, DraftOption};
     use thecave::utils::draft::DraftUtils::{get_draft_option};
+    use thecave::constants::Messages;
 
     #[external(v0)]
     impl BattleActionsImpl of IBattleActions<ContractState> {

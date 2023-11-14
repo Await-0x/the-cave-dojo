@@ -15,7 +15,10 @@ mod game_actions {
 
     use thecave::models::game::Game;
     use thecave::models::draft::{Draft, DraftOption};
+    use thecave::models::battle::{HandCard, DeckCard};
     use thecave::utils::draft::DraftUtils::{get_draft_option};
+    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT};
+    use thecave::utils::random::shuffle_deck;
 
     #[external(v0)]
     impl GameActionsImpl of IGameActions<ContractState> {
@@ -42,12 +45,26 @@ mod game_actions {
             let world = self.world_dispatcher.read();
             let player = get_caller_address();
             
-            let game = get!(world, (battle.game_id) Game);
+            let game = get!(world, (game_id), Game);
 
-            let card_count = 0;
-            set!(world, (
-                
-            ))
+            assert(game.player == player, Messages::NOT_OWNER);
+            assert(game.active == true, Messages::GAME_OVER);
+            assert(game.in_draft == false, Messages::IN_DRAFT);
+            assert(game.in_battle == false, Messages::IN_BATTLE);
+
+            let shuffled_deck = shuffle_deck(1, DECK_SIZE);
+            
+            let mut i = 0;
+            loop {
+                if i >= shuffled_deck.len() {
+                    break;
+                }
+
+                if i < DRAW_AMOUNT {
+                    set!(world, (), HandCard)
+                }
+
+            };
         }
     }
 }
