@@ -15,9 +15,11 @@ mod game_actions {
 
     use thecave::models::game::Game;
     use thecave::models::draft::{Draft, DraftOption};
-    use thecave::models::battle::{HandCard, DeckCard};
-    use thecave::utils::draft::DraftUtils::{get_draft_option};
-    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT};
+    use thecave::models::battle::{Battle, HandCard, DeckCard};
+    use thecave::utils::cards::CardUtils::{get_card};
+    use thecave::utils::monsters::MonsterUtils::{get_monster};
+    use thecave::utils::draft::DraftUtils::{get_draft_options};
+    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, START_HEALTH};
     use thecave::utils::random::shuffle_deck;
 
     #[external(v0)]
@@ -28,17 +30,14 @@ mod game_actions {
 
             let game_id = world.uuid();
             let card_count = 0;
+            let entropy = 1;
 
             set!(world, (
-                Game { id: game_id, player: player, active: true, in_draft: true, in_battle: false, battles_won: 0, entropy: 0 },
+                Game { id: game_id, player: player, active: true, in_draft: true, in_battle: false, battles_won: 0, entropy },
                 Draft { game_id, card_count: 0 }
             ));
 
-            set!(world, (
-                get_draft_option(game_id, 0, 1),
-                get_draft_option(game_id, 1, 2),
-                get_draft_option(game_id, 2, 3),
-            ));
+            set!(world, get_draft_options(game_id, entropy));
         }
 
         fn start_battle(self: @ContractState, game_id: usize) {
@@ -52,6 +51,25 @@ mod game_actions {
             assert(game.in_draft == false, Messages::IN_DRAFT);
             assert(game.in_battle == false, Messages::IN_BATTLE);
 
+            let battle_id = world.uuid();
+
+            set!(world, (
+                Battle {
+                    id: battle_id,
+                    game_id,
+                    active: true,
+                    adventure_health: START_HEALTH,
+                    round: 1,
+                    board_count: 0,
+                    hand_count: 5,
+                    vortex_count: 0,
+                    deck_index: DRAW_AMOUNT
+                },
+            ));
+
+            let monster = get_monster(battle_id, game.battles_won);
+            set!(world, (monster));
+
             let shuffled_deck = shuffle_deck(1, DECK_SIZE);
             
             let mut i = 0;
@@ -60,10 +78,20 @@ mod game_actions {
                     break;
                 }
 
+                let draft_card = get!(world, (game_id, *shuffled_deck.at(i)), DraftCard);
+                let card = get_card(draft_card.card_id);
+
                 if i < DRAW_AMOUNT {
-                    set!(world, (), HandCard)
+                    set!(world, (
+                        HandCard { id: i, battle_id, card_id: card.id, card_type: card.card_type, cost: card.cost, attack: card.attack, health: card.health }, 
+                    ));
+                } else {
+                    set!(world, (
+                        DeckCard { battle_id, number: i, card_type: card.card_type, cost: card.cost, attack: card.attack, health: card.health },
+                    ));
                 }
 
+                i += 1;
             };
         }
     }

@@ -1,4 +1,4 @@
-use debug::PrintTrait;
+use thecave::constants::CARD_POOL_SIZE;
 
 fn LCG(seed: u64) -> u64 {
     let a = 1664525;
@@ -62,6 +62,10 @@ fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
     };
     
     shuffled_deck
+}
+
+fn get_random_card_id(entropy: u64) -> u16 {
+    entropy % CARD_POOL_SIZE
 }
 
 #[cfg(test)]

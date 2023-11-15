@@ -16,10 +16,9 @@ struct Battle {
 struct Monster {
     #[key]
     battle_id: usize,
-    #[key]
-    monster_id: usize,
+    monster_id: u8,
     attack: u16,
-    health: u16,
+    health: u16
 }
 
 #[derive(Model, Copy, Drop, Serde)]
@@ -30,7 +29,7 @@ struct Creature {
     battle_id: usize,
     attack: u16,
     health: u16,
-    resting: bool,
+    resting: bool
 }
 
 #[derive(Model, Copy, Drop, Serde)]
@@ -52,6 +51,10 @@ struct DeckCard {
     #[key]
     number: u16,
     card_id: u16,
+    card_type: u8,
+    cost: u8,
+    attack: u16,
+    health: u16
 }
 
 #[derive(Model, Copy, Drop, Serde)]

@@ -20,6 +20,7 @@ struct DraftOption {
 struct DraftCard {
     #[key]
     game_id: usize,
+    #[key]
+    number: u8,
     card_id: u16,
-    number: u8
 }

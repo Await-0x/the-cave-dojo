@@ -16,8 +16,8 @@ mod draft_actions {
 
     use thecave::models::game::{Game};
     use thecave::models::draft::{Draft, DraftOption, DraftCard};
-    use thecave::utils::draft::DraftUtils::{get_draft_option};
-    use thecave::constants::Messages;
+    use thecave::utils::draft::DraftUtils::{get_draft_options};
+    use thecave::constants::{Messages, DECK_SIZE};
 
     #[external(v0)]
     impl DraftActionsImpl of IDraftActions<ContractState> {
@@ -43,12 +43,8 @@ mod draft_actions {
                 DraftCard { game_id, card_id: choice.card_id, number: card_count },
             ));
 
-            if card_count < 30 {
-                set!(world, (
-                    get_draft_option(game_id, 0, 1),
-                    get_draft_option(game_id, 1, 2),
-                    get_draft_option(game_id, 2, 3),
-                ));
+            if card_count < DECK_SIZE {
+                set!(world, (get_draft_options(game_id, game.entropy)));
             } else {
                 set!(world, (
                     Game { id: game_id, player: player, active: true, in_draft: false, in_battle: false, battles_won: 0, entropy: 0 },

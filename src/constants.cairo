@@ -1,5 +1,7 @@
+const CARD_POOL_SIZE: u16: 100;
 const DECK_SIZE: u8 = 20;
-const DRAW_AMOUNT: u16 = 5;
+const DRAW_AMOUNT: u8 = 5;
+const START_HEALTH: u8: 30;
 
 mod CardTypes {
     const CREATURE: felt252 = 'creature';

@@ -10,5 +10,5 @@ struct Game {
     in_draft: bool,
     in_battle: bool,
     battles_won: u16,
-    entropy: usize
+    entropy: u64
 }
