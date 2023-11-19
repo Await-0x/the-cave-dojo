@@ -13,7 +13,7 @@ mod battle_actions {
     use super::Ibattle_actions;
     use thecave::models::{
         game::Game,
-        battle::{Battle, Monster},
+        battle::{Battle, Monster, SpecialEffects},
     };
     use thecave::utils::battle::{
         battle_actions::{summon_creature, cast_spell, attack, vortex},
@@ -37,6 +37,8 @@ mod battle_actions {
             let mut monster = get!(world, (battle.id), Monster);
             assert(monster.health > 0, Messages::GAME_OVER);
 
+            let mut special_effects = get!(world, (battle.id), SpecialEffects);
+
             let action_count = player_actions.len();
             let mut action_index = 0;
 
@@ -50,16 +52,16 @@ mod battle_actions {
 
                 match action_type {
                     'summon_creature' => { 
-                        summon_creature(world, ref battle, entity, ref monster);
+                        summon_creature(world, entity, ref battle, ref monster, ref special_effects);
                     },
                     'cast_spell' => {
-                        cast_spell(world, ref battle, entity, target);
+                        cast_spell(world, entity, target, ref battle, ref special_effects);
                     },
                     'attack' => {
-                        attack_monster(world, ref battle, entity, ref monster);
+                        attack_monster(world, entity, ref battle, ref monster, ref special_effects);
                     },
                     'vortex' => {
-                        vortex(world, ref battle, entity);
+                        vortex(world, entity, ref battle, ref monster, ref special_effects);
                     },
                     _ => panic(array!['Unknown move']),
                 }
@@ -92,7 +94,7 @@ mod battle_actions {
             battle.adventure_health = ENERGY;
             battle.round += 1;
 
-            set!(world, (battle, monster));
+            set!(world, (battle, monster, special_effects));
         }
     }
 }

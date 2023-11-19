@@ -135,18 +135,27 @@ mod battle_actions {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     use thecave::utils::creature::creature_utils;
+    use thecave::utils::spell::spell_utils;
+    use thecave::utils::attack::attack_utils;
+    use thecave::utils::vortex::vortex_utils;
     use thecave::utils::battle::battle_utils::battle_result;
-    use thecave::models::battle::{Battle, HandCard, Creature, Monster};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, SpecialEffects};
     use thecave::constants::{CardTypes};
 
-    fn summon_creature(world: IWorldDispatcher, ref battle: Battle, id: u16, ref monster: Monster) {
-        let card = get!(world, (id, battle.id), HandCard);
+    fn summon_creature(
+        world: IWorldDispatcher,
+        entity_id: u16,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref special_effects: SpecialEffects
+    ) {
+        let card = get!(world, (entity_id, battle.id), HandCard);
 
         if card.cost > battle.adventure_energy || card.card_type != CardTypes::CREATURE {
             return;
         }
 
-        world.delete_entity('hand_card', array![id.into(), battle.id.into()].span());
+        world.delete_entity('hand_card', array![entity_id.into(), battle.id.into()].span());
 
         set!(world, ( Creature {
             id: card.id,
@@ -158,26 +167,52 @@ mod battle_actions {
         } ));
 
         battle.adventure_energy -= card.cost;
-        creature_utils::summon_effect(world, id, card.card_id, ref battle, ref monster);
+        creature_utils::summon_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
     }
 
-    fn cast_spell(world: IWorldDispatcher, ref battle: Battle, id: u16, target_id: u16) {
-        let card = get!(world, (id, battle.id), HandCard);
+    fn cast_spell(
+        world: IWorldDispatcher,
+        entity_id: u16,
+        target_id: u16,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref special_effects: SpecialEffects
+    ) {
+        let card = get!(world, (entity_id, battle.id), HandCard);
+        let mut creature = get!(world, (target_id, battle.id), Creature);
 
         if card.cost > battle.adventure_energy || card.card_type != CardTypes::SPELL {
             return;
         }
 
         battle.adventure_energy -= card.cost;
+        spell_utils::spell_effect(world, entity_id, card.card_id, ref battle, ref monster, ref creature, ref special_effects);
     }
 
-    fn attack_monster(world: IWorldDispatcher, ref battle: Battle, id: u16, ref target: Monster) {
-        let mut creature = get!(world, (id, battle.id), Creature);
+    fn attack_monster(
+        world: IWorldDispatcher,
+        entity_id: u16,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref special_effects: SpecialEffects
+    ) {
+        let mut creature = get!(world, (entity_id, battle.id), Creature);
         
-        battle_result(world, ref battle, ref creature, ref target);
+        attack_utils::attack_effect(world, entity_id, creature.card_id, ref battle, ref monster, ref creature, ref special_effects);
+        battle_result(world, ref battle, ref creature, ref monster);
     }
 
-    fn vortex(world: IWorldDispatcher, ref battle: Battle, id: u16) {
-        world.delete_entity('hand_card', array![id.into(), battle.id.into()].span());
+    fn vortex(
+        world: IWorldDispatcher,
+        entity_id: u16,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref special_effects: SpecialEffects
+    ) {
+        let card = get!(world, (entity_id, battle.id), HandCard);
+
+        vortex_utils::vortex_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
+
+        world.delete_entity('hand_card', array![entity_id.into(), battle.id.into()].span());
     }
 }

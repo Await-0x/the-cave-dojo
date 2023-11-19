@@ -4,3 +4,6 @@ mod draft;
 mod monsters;
 mod random;
 mod creature;
+mod spell;
+mod attack;
+mod vortex;
