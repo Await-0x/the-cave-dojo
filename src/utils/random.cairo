@@ -1,4 +1,28 @@
-use thecave::constants::CARD_POOL_SIZE;
+use thecave::constants::{CARD_POOL_SIZE, U128_MAX};
+use core::{
+    array::{SpanTrait, ArrayTrait}, integer::u256_try_as_non_zero, traits::{TryInto, Into},
+    clone::Clone, poseidon::poseidon_hash_span, option::OptionTrait, box::BoxTrait,
+    starknet::{
+        get_caller_address, ContractAddress, ContractAddressIntoFelt252, contract_address_const,
+        get_block_timestamp, info::BlockInfo
+    },
+};
+
+fn get_entropy(player: ContractAddress) -> u64 {
+    let mut hash_span = ArrayTrait::<felt252>::new();
+
+    hash_span.append(get_block_timestamp().into());
+    hash_span.append(player.into());
+
+    let poseidon: felt252 = poseidon_hash_span(hash_span.span()).into();
+
+    let (d, r) = integer::U256DivRem::div_rem(
+        poseidon.into(), u256_try_as_non_zero(U128_MAX.into()).unwrap()
+    );
+
+    r.try_into().unwrap()
+}
+
 
 fn LCG(seed: u64) -> u64 {
     let a = 1664525;
@@ -65,7 +89,7 @@ fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
 }
 
 fn get_random_card_id(entropy: u64) -> u16 {
-    entropy % CARD_POOL_SIZE
+    (entropy % CARD_POOL_SIZE).try_into().unwrap()
 }
 
 #[cfg(test)]

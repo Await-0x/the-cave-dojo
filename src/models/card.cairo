@@ -5,6 +5,6 @@ struct Card {
     name: felt252,
     card_type: felt252,
     cost: u8,
-    attack: u8,
-    health: u8,
+    attack: u16,
+    health: u16,
 }

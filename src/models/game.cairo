@@ -9,6 +9,5 @@ struct Game {
     active: bool,
     in_draft: bool,
     in_battle: bool,
-    battles_won: u16,
-    entropy: u64
+    battles_won: u16
 }

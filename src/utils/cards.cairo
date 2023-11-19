@@ -1,4 +1,4 @@
-mod CardUtils {
+mod card_utils {
     use array::ArrayTrait;
     use thecave::models::card::{Card};
     use thecave::constants::{CardTypes};

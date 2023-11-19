@@ -14,12 +14,13 @@ mod game_actions {
     use super::IGameActions;
 
     use thecave::models::game::Game;
-    use thecave::models::draft::{Draft, DraftOption};
-    use thecave::models::battle::{Battle, HandCard, DeckCard};
-    use thecave::utils::cards::CardUtils::{get_card};
-    use thecave::utils::monsters::MonsterUtils::{get_monster};
-    use thecave::utils::draft::DraftUtils::{get_draft_options};
-    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, START_HEALTH};
+    use thecave::models::card::Card;
+    use thecave::models::draft::{Draft, DraftCard, DraftOption};
+    use thecave::models::battle::{Battle, HandCard, DeckCard, SpecialEffects};
+    use thecave::utils::cards::card_utils::{get_card};
+    use thecave::utils::monsters::monster_utils::{get_monster};
+    use thecave::utils::draft::draft_utils::{get_draft_options};
+    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, START_HEALTH, ENERGY};
     use thecave::utils::random::shuffle_deck;
 
     #[external(v0)]
@@ -30,14 +31,14 @@ mod game_actions {
 
             let game_id = world.uuid();
             let card_count = 0;
-            let entropy = 1;
 
             set!(world, (
-                Game { id: game_id, player: player, active: true, in_draft: true, in_battle: false, battles_won: 0, entropy },
+                Game { id: game_id, player: player, active: true, in_draft: true, in_battle: false, battles_won: 0 },
                 Draft { game_id, card_count: 0 }
             ));
 
-            set!(world, get_draft_options(game_id, entropy));
+            let (option_1, option_2, option_3) = get_draft_options(game_id, player); 
+            set!(world, (option_1, option_2, option_3));
         }
 
         fn start_battle(self: @ContractState, game_id: usize) {
@@ -57,14 +58,25 @@ mod game_actions {
                 Battle {
                     id: battle_id,
                     game_id,
-                    active: true,
                     adventure_health: START_HEALTH,
+                    adventure_energy: ENERGY,
                     round: 1,
+                    deck_index: DRAW_AMOUNT.into(),
+                    deck_size: (DECK_SIZE - DRAW_AMOUNT).into(),
                     board_count: 0,
-                    hand_count: 5,
+                    hand_total: 5,
                     vortex_count: 0,
-                    deck_index: DRAW_AMOUNT
                 },
+                SpecialEffects {
+                    battle_id,
+                    sleep: true,
+                    vortex_limit: 1,
+                    draw_from_vortex: false,
+                    vortex_draw: false,
+                    vortex_energy: false,
+                    vortex_hand: false,
+                    draw_extra_life_cost: false
+                }
             ));
 
             let monster = get_monster(battle_id, game.battles_won);
@@ -78,16 +90,32 @@ mod game_actions {
                     break;
                 }
 
-                let draft_card = get!(world, (game_id, *shuffled_deck.at(i)), DraftCard);
-                let card = get_card(draft_card.card_id);
+                let draft_card: DraftCard = get!(world, (game_id, *shuffled_deck.at(i)), DraftCard);
+                let card: Card = get_card(draft_card.card_id);
 
-                if i < DRAW_AMOUNT {
+                if i < DRAW_AMOUNT.into() {
                     set!(world, (
-                        HandCard { id: i, battle_id, card_id: card.id, card_type: card.card_type, cost: card.cost, attack: card.attack, health: card.health }, 
+                        HandCard {
+                            id: i.try_into().unwrap(),
+                            battle_id,
+                            card_id: card.id,
+                            card_type: card.card_type,
+                            cost: card.cost,
+                            attack: card.attack,
+                            health: card.health
+                        }, 
                     ));
                 } else {
                     set!(world, (
-                        DeckCard { battle_id, number: i, card_type: card.card_type, cost: card.cost, attack: card.attack, health: card.health },
+                        DeckCard {
+                            battle_id,
+                            number: i.try_into().unwrap(),
+                            card_id: card.id,
+                            card_type: card.card_type,
+                            cost: card.cost,
+                            attack: card.attack,
+                            health: card.health
+                        },
                     ));
                 }
 

@@ -1,7 +1,8 @@
-const CARD_POOL_SIZE: u16: 100;
+const CARD_POOL_SIZE: u64 = 100;
 const DECK_SIZE: u8 = 20;
 const DRAW_AMOUNT: u8 = 5;
-const START_HEALTH: u8: 30;
+const START_HEALTH: u16 = 30;
+const ENERGY: u8 = 5;
 
 mod CardTypes {
     const CREATURE: felt252 = 'creature';
@@ -22,3 +23,5 @@ mod Messages {
     const IN_BATTLE: felt252 = 'Already in battle';
     const IN_DRAFT: felt252 = 'Draft not over';
 }
+
+const U128_MAX: u128 = 340282366920938463463374607431768211455;
