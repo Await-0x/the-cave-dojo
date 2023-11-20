@@ -65,7 +65,7 @@ mod game_actions {
                     deck_size: (DECK_SIZE - DRAW_AMOUNT).into(),
                     board_count: 0,
                     hand_total: 5,
-                    vortex_count: 0,
+                    vortex_count: 0
                 },
                 SpecialEffects {
                     battle_id,

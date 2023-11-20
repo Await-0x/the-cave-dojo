@@ -139,7 +139,7 @@ mod battle_actions {
     use thecave::utils::attack::attack_utils;
     use thecave::utils::vortex::vortex_utils;
     use thecave::utils::battle::battle_utils::battle_result;
-    use thecave::models::battle::{Battle, HandCard, Creature, Monster, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, Minion, SpecialEffects};
     use thecave::constants::{CardTypes};
 
     fn summon_creature(
@@ -200,6 +200,37 @@ mod battle_actions {
         
         attack_utils::attack_effect(world, entity_id, creature.card_id, ref battle, ref monster, ref creature, ref special_effects);
         battle_result(world, ref battle, ref creature, ref monster);
+    }
+
+    fn attack_minion(
+        world: IWorldDispatcher,
+        entity_id: u16,
+        target_id: u16,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref special_effects: SpecialEffects
+    ) {
+        let mut creature = get!(world, (entity_id, battle.id), Creature);
+        let mut minion = get!(world, (battle.id, target_id), Minion);
+
+        attack_utils::attack_effect(world, entity_id, creature.card_id, ref battle, ref monster, ref creature, ref special_effects);
+
+        minion.health -= creature.attack;
+        creature.health -= minion.attack;
+
+        if creature.health <= 0 {
+            add_card_to_deck(world, ref battle, creature.card_id);
+            world.delete_entity('Creature', array![creature.id.into(), battle.id.into()].span());
+        } else {
+            set!(world, (creature));
+        }
+
+        if minion.health <= 0 {
+            monster.minions_attack -= minion_attack;
+            world.delete_entity('Minion', array![battle.id.into(), target_id.into()].span());
+        } else {
+            set!(world, (minion));
+        }
     }
 
     fn vortex(

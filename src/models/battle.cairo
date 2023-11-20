@@ -20,7 +20,19 @@ struct Monster {
     monster_id: u8,
     attack: u16,
     health: u16,
-    taunted_by: u16
+    enrage_turn: u8,
+    taunted_by: u16,
+    minions_attack: u16 // Total attack of all minions
+}
+
+#[derive(Model, Copy, Drop, Serde)]
+struct Minion {
+    #[key]
+    battle_id: usize,
+    #[key]
+    number: u8,
+    attack: u16,
+    health: u16,
 }
 
 #[derive(Model, Copy, Drop, Serde)]

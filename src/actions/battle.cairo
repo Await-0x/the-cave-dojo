@@ -16,9 +16,10 @@ mod battle_actions {
         battle::{Battle, Monster, SpecialEffects},
     };
     use thecave::utils::battle::{
-        battle_actions::{summon_creature, cast_spell, attack, vortex},
-        battle_utils::{monster_attack, add_hand_to_deck, draw_cards}
+        battle_actions::{summon_creature, cast_spell, attack_monster, attack_minion, vortex},
+        battle_utils::{monster_attack, add_hand_to_deck, draw_cards},
     };
+    use thecave::utils::monster::monster_utils;
     use thecave::constants::{Messages, ENERGY, DRAW_AMOUNT};
 
     #[external(v0)]
@@ -57,8 +58,11 @@ mod battle_actions {
                     'cast_spell' => {
                         cast_spell(world, entity, target, ref battle, ref special_effects);
                     },
-                    'attack' => {
+                    'attack_monster' => {
                         attack_monster(world, entity, ref battle, ref monster, ref special_effects);
+                    },
+                    'attack_minion' => {
+                        attack_minion(world, entity, target, ref battle, ref special_effects);
                     },
                     'vortex' => {
                         vortex(world, entity, ref battle, ref monster, ref special_effects);
@@ -77,7 +81,7 @@ mod battle_actions {
                 return;
             }
 
-            monster_attack(world, ref battle, ref monster);
+            monster_utils::monster_attack(world, ref battle, ref monster);
 
             if battle.adventure_health < 1 {
                 game.active = false;
@@ -96,45 +100,5 @@ mod battle_actions {
 
             set!(world, (battle, monster, special_effects));
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use starknet::class_hash::Felt252TryIntoClassHash;
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-    use dojo::test_utils::{spawn_test_world, deploy_contract};
-
-    use thecave::models::{
-        game::Game,
-        battle::{Battle, Monster, HandCard, Creature},
-    };
-
-    use super::{battle_actions, IActionsDispatcher, IActionsDispatcherTrait};
-
-    #[test]
-    #[available_gas(30000000)]
-    fn test_end_turn() {
-        let caller = starknet::contract_address_const::<0x0>();
-
-        let mut models = array![
-            Game::TEST_CLASS_HASH,
-            Battle::TEST_CLASS_HASH,
-            Monster::TEST_CLASS_HASH,
-            HandCard::TEST_CLASS_HASH,
-            Creature::TEST_CLASS_HASH
-        ];
-
-        let world = spawn_test_world(models);
-
-        let contract_address = world
-            .deploy_contract('salt', actions::TEST_CLASS_HASH.try_into().unwrap());
-        let actions_system = IActionsDispatcher { contract_address };
-
-        // call spawn()
-        
-
-        // call move with direction right
-        actions_system.move(Direction::Right(()));
     }
 }
