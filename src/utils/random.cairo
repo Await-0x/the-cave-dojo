@@ -1,4 +1,6 @@
-use thecave::constants::{CARD_POOL_SIZE, U128_MAX};
+use thecave::constants::{CARD_POOL_SIZE, U128_MAX, DECK_SIZE};
+use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use thecave::models::battle::{DeckCard, Battle};
 use core::{
     array::{SpanTrait, ArrayTrait}, integer::u256_try_as_non_zero, traits::{TryInto, Into},
     clone::Clone, poseidon::poseidon_hash_span, option::OptionTrait, box::BoxTrait,
@@ -8,11 +10,11 @@ use core::{
     },
 };
 
-fn get_entropy(player: ContractAddress) -> u64 {
+fn get_entropy(number: u8) -> u64 {
     let mut hash_span = ArrayTrait::<felt252>::new();
 
     hash_span.append(get_block_timestamp().into());
-    hash_span.append(player.into());
+    hash_span.append(number.into());
 
     let poseidon: felt252 = poseidon_hash_span(hash_span.span()).into();
 
@@ -90,6 +92,17 @@ fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
 
 fn get_random_card_id(entropy: u64) -> u16 {
     (entropy % CARD_POOL_SIZE).try_into().unwrap()
+}
+
+fn get_random_deck_card(world: IWorldDispatcher, entropy: u64, battle: Battle) -> DeckCard {
+    let rnd: u8 = (entropy % DECK_SIZE.into()).try_into().unwrap();
+    let card = get!(world, (battle.id, rnd, battle.deck_number), DeckCard);
+
+    if card.battle_id != 0 {
+        return card;
+    }
+
+    get_random_deck_card(world, LCG(entropy), battle)
 }
 
 #[cfg(test)]

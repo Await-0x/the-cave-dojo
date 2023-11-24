@@ -1,6 +1,7 @@
 mod monster_utils {
+    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use array::ArrayTrait;
-    use thecave::models::battle::{Monster, Battle};
+    use thecave::models::battle::{Monster, Battle, Creature};
     use thecave::utils::battle::battle_utils::battle_result;
 
     fn get_monster(battle_id: usize, battles_won: u16) -> Monster {
@@ -20,9 +21,9 @@ mod monster_utils {
 
     fn monster_attack(world: IWorldDispatcher, ref battle: Battle, ref monster: Monster) {
         if monster.taunted_by > 0 {
-            let mut creature = get!(world, (monster.taunted_by, battle.id), Creature);
+            let mut creature: Creature = get!(world, (monster.taunted_by, battle.id), Creature);
 
-            if battle.turn >= monster.enrage_turn {
+            if battle.round >= monster.enrage_turn.into() {
                 battle.adventure_health -= (monster.attack - creature.health);
             }
 
@@ -31,6 +32,6 @@ mod monster_utils {
             battle.adventure_health -= monster.attack;
         }
 
-        battle.adventure_health -= minions_attack;
+        battle.adventure_health -= monster.minions_attack;
     }
 }

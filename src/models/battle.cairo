@@ -6,11 +6,11 @@ struct Battle {
     adventure_health: u16,
     adventure_energy: u8,
     round: u16,
-    deck_index: u16,
     deck_size: u16,
-    hand_total: u8, // Total amount of cards we had during the turn. Used to fetch hand.
+    hand_size: u8,
     board_count: u8,
-    vortex_count: u8,
+    deck_number: u8,
+    discard_count: u8,
 }
 
 #[derive(Model, Copy, Drop, Serde)]
@@ -21,8 +21,8 @@ struct Monster {
     attack: u16,
     health: u16,
     enrage_turn: u8,
-    taunted_by: u16,
-    minions_attack: u16 // Total attack of all minions
+    taunted_by: u8,
+    minions_attack: u16,
 }
 
 #[derive(Model, Copy, Drop, Serde)]
@@ -38,7 +38,7 @@ struct Minion {
 #[derive(Model, Copy, Drop, Serde)]
 struct Creature {
     #[key]
-    id: u16,
+    id: u8,
     #[key]
     battle_id: usize,
     card_id: u16,
@@ -50,7 +50,7 @@ struct Creature {
 #[derive(Model, Copy, Drop, Serde)]
 struct HandCard {
     #[key]
-    id: u16,
+    id: u8,
     #[key]
     battle_id: usize,
     card_id: u16,
@@ -65,7 +65,9 @@ struct DeckCard {
     #[key]
     battle_id: usize,
     #[key]
-    number: u16,
+    deck_number: u8,
+    #[key]
+    card_number: u8,
     card_id: u16,
     card_type: felt252,
     cost: u8,
@@ -74,33 +76,10 @@ struct DeckCard {
 }
 
 #[derive(Model, Copy, Drop, Serde)]
-struct VortexCard {
-    #[key]
-    id: u16,
-    #[key]
-    battle_id: usize,
-    card_id: u16,
-}
-
-#[derive(Model, Copy, Drop, Serde)]
 struct SpecialEffects {
     #[key]
     battle_id: usize,
     sleep: bool,
-    vortex_limit: u8,
-    draw_from_vortex: bool,
-    vortex_draw: bool,
-    vortex_energy: bool,
-    vortex_hand: bool,
+    discard_cost: u8,
     draw_extra_life_cost: bool
-}
-
-trait BattleTrait {
-    fn next_number(self: Battle) -> u16;
-}
-
-impl BattleImpl of BattleTrait {
-    fn next_number(self: Battle) -> u16 {
-        self.deck_index + self.deck_size
-    }
 }

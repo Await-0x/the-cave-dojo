@@ -20,7 +20,7 @@ mod game_actions {
     use thecave::utils::cards::card_utils::{get_card};
     use thecave::utils::monsters::monster_utils::{get_monster};
     use thecave::utils::draft::draft_utils::{get_draft_options};
-    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, START_HEALTH, ENERGY};
+    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, DISCARD_COST, START_HEALTH, START_ENERGY};
     use thecave::utils::random::shuffle_deck;
 
     #[external(v0)]
@@ -37,7 +37,7 @@ mod game_actions {
                 Draft { game_id, card_count: 0 }
             ));
 
-            let (option_1, option_2, option_3) = get_draft_options(game_id, player); 
+            let (option_1, option_2, option_3) = get_draft_options(game_id); 
             set!(world, (option_1, option_2, option_3));
         }
 
@@ -59,22 +59,18 @@ mod game_actions {
                     id: battle_id,
                     game_id,
                     adventure_health: START_HEALTH,
-                    adventure_energy: ENERGY,
+                    adventure_energy: START_ENERGY,
                     round: 1,
-                    deck_index: DRAW_AMOUNT.into(),
                     deck_size: (DECK_SIZE - DRAW_AMOUNT).into(),
                     board_count: 0,
-                    hand_total: 5,
-                    vortex_count: 0
+                    hand_size: DRAW_AMOUNT,
+                    deck_number: 1,
+                    discard_count: 0,
                 },
                 SpecialEffects {
                     battle_id,
                     sleep: true,
-                    vortex_limit: 1,
-                    draw_from_vortex: false,
-                    vortex_draw: false,
-                    vortex_energy: false,
-                    vortex_hand: false,
+                    discard_cost: DISCARD_COST,
                     draw_extra_life_cost: false
                 }
             ));
@@ -109,7 +105,8 @@ mod game_actions {
                     set!(world, (
                         DeckCard {
                             battle_id,
-                            number: i.try_into().unwrap(),
+                            card_number: i.try_into().unwrap(),
+                            deck_number: 1,
                             card_id: card.id,
                             card_type: card.card_type,
                             cost: card.cost,

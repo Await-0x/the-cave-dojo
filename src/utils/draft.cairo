@@ -5,12 +5,12 @@ mod draft_utils {
     use thecave::utils::cards::card_utils::{get_card};
     use thecave::utils::random::{get_random_card_id, LCG, get_entropy};
 
-    fn get_draft_options(game_id: usize, player: ContractAddress) -> (DraftOption, DraftOption, DraftOption) {
+    fn get_draft_options(game_id: usize) -> (DraftOption, DraftOption, DraftOption) {
         let mut card_1 = 0;
         let mut card_2 = 0;
         let mut card_3 = 0;
 
-        let mut seed = get_entropy(player);
+        let mut seed = get_entropy(1);
     
         card_1 = get_random_card_id(seed);
         seed = LCG(seed);

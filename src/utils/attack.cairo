@@ -4,7 +4,7 @@ mod attack_utils {
     use array::ArrayTrait;
     use thecave::models::card::{Card};
     use thecave::utils::battle::battle_utils;
-    use thecave::models::battle::{Battle, BattleTrait, HandCard, Creature, Monster, DeckCard, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard, SpecialEffects};
     use thecave::constants::{CardTypes};
 
     fn attack_effect(

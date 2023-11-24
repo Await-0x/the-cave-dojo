@@ -4,15 +4,26 @@ mod battle_utils {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     use thecave::utils::cards::card_utils;
-    use thecave::models::battle::{Battle, BattleTrait, HandCard, Creature, Monster, DeckCard};
+    use thecave::utils::random;
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard};
     use thecave::models::card::{Card};
-    use thecave::constants::{CardTypes};
+    use thecave::constants::{CardTypes, START_ENERGY, MAX_ENERGY};
 
-    fn gain_health(ref battle: Battle, amount: u8) {
+    fn get_next_energy(round: u8) -> u8 {
+        let mut energy = START_ENERGY + round;
+
+        if energy > MAX_ENERGY {
+            return MAX_ENERGY;
+        }
+
+        energy
+    }
+
+    fn increase_health(ref battle: Battle, amount: u8) {
         battle.adventure_health += amount.into();
     }
 
-    fn gain_energy(ref battle: Battle, amount: u8) {
+    fn increase_energy(ref battle: Battle, amount: u8) {
         battle.adventure_energy += amount;
     }
 
@@ -24,40 +35,21 @@ mod battle_utils {
                 break;
             }
 
-            draw_card(world, ref battle);
+            draw_card(world, ref battle, i);
 
             i += 1;
         }
     }
 
-    fn add_hand_to_deck(world: IWorldDispatcher, ref battle: Battle) {
-        let hand_cards = get_hand_cards(world, ref battle);
-
-        let mut i = 0;
-
-        loop {
-            if i == hand_cards.len() {
-                break;
-            }
-
-            let card_id = *hand_cards.at(i);
-
-            add_card_to_deck(world, ref battle, card_id);
-
-            i += 1;
-        };
-
-        battle.hand_total = 0;
-    }
-
-    fn add_card_to_deck(world: IWorldDispatcher, ref battle: Battle, card_id: u16) {
+    fn discard_card(world: IWorldDispatcher, ref battle: Battle, card_id: u16) {
         let card = card_utils::get_card(card_id);
 
         set!(world, (
             DeckCard {
                 battle_id: battle.id,
-                number: battle.next_number(),
-                card_id,
+                card_number: battle.discard_count,
+                deck_number: battle.deck_number + 1,
+                card_id: card.id,
                 card_type: card.card_type,
                 cost: card.cost,
                 attack: card.attack,
@@ -65,16 +57,17 @@ mod battle_utils {
             }
         ));
 
-        battle.deck_size += 1;
+        battle.discard_count += 1;
     }
 
-    fn draw_card(world: IWorldDispatcher, ref battle: Battle) {
-        let next_card: DeckCard = get!(world, (battle.id, battle.deck_index), DeckCard);
+    fn draw_card(world: IWorldDispatcher, ref battle: Battle, number: u8) {
+        let entropy = random::get_entropy(number);
+        let next_card: DeckCard = random::get_random_deck_card(world, entropy, battle);
         let card: Card = card_utils::get_card(next_card.card_id);
 
         set!(world, (
             HandCard {
-                id: battle.deck_index,
+                id: next_card.card_number,
                 battle_id: battle.id,
                 card_id: card.id,
                 card_type: card.card_type,
@@ -84,29 +77,10 @@ mod battle_utils {
             }, 
         ));
 
-        battle.deck_index += 1;
+        world.delete_entity('deck_card', array![battle.id.into(), next_card.card_number.into()].span());
+
         battle.deck_size -= 1;
-        battle.hand_total += 1;
-    }
-
-    fn get_hand_cards(world: IWorldDispatcher, ref battle: Battle) -> Array<u16> {
-        let mut i = 0;
-        let mut cards = array![];
-
-        loop {
-            if i == battle.hand_total {
-                break;
-            }
-
-            let hand_card = get!(world, (battle.deck_index - i.into(), battle.id), HandCard);
-            if (hand_card.id != 0) {
-                cards.append(hand_card.card_id);
-            }
-
-            i += 1;
-        };
-
-        cards
+        battle.hand_size += 1;
     }
 
     fn monster_attack(world: IWorldDispatcher, ref battle: Battle, ref monster: Monster) {
@@ -122,7 +96,7 @@ mod battle_utils {
         monster.health -= creature.attack;
         
         if creature.health <= monster.attack {
-            add_card_to_deck(world, ref battle, creature.card_id);
+            discard_card(world, ref battle, creature.card_id);
             world.delete_entity('Creature', array![creature.id.into(), battle.id.into()].span());
         } else {
             creature.health -= monster.attack;
@@ -137,14 +111,14 @@ mod battle_actions {
     use thecave::utils::creature::creature_utils;
     use thecave::utils::spell::spell_utils;
     use thecave::utils::attack::attack_utils;
-    use thecave::utils::vortex::vortex_utils;
-    use thecave::utils::battle::battle_utils::battle_result;
+    use thecave::utils::discard::discard_utils;
+    use thecave::utils::battle::battle_utils::{battle_result, discard_card};
     use thecave::models::battle::{Battle, HandCard, Creature, Monster, Minion, SpecialEffects};
     use thecave::constants::{CardTypes};
 
     fn summon_creature(
         world: IWorldDispatcher,
-        entity_id: u16,
+        entity_id: u8,
         ref battle: Battle,
         ref monster: Monster,
         ref special_effects: SpecialEffects
@@ -219,21 +193,21 @@ mod battle_actions {
         creature.health -= minion.attack;
 
         if creature.health <= 0 {
-            add_card_to_deck(world, ref battle, creature.card_id);
+            discard_card(world, ref battle, creature.card_id);
             world.delete_entity('Creature', array![creature.id.into(), battle.id.into()].span());
         } else {
             set!(world, (creature));
         }
 
         if minion.health <= 0 {
-            monster.minions_attack -= minion_attack;
+            monster.minions_attack -= minion.attack;
             world.delete_entity('Minion', array![battle.id.into(), target_id.into()].span());
         } else {
             set!(world, (minion));
         }
     }
 
-    fn vortex(
+    fn discard(
         world: IWorldDispatcher,
         entity_id: u16,
         ref battle: Battle,
@@ -242,8 +216,9 @@ mod battle_actions {
     ) {
         let card = get!(world, (entity_id, battle.id), HandCard);
 
-        vortex_utils::vortex_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
+        discard_utils::discard_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
 
+        discard_card(world, ref battle, card.card_id);
         world.delete_entity('hand_card', array![entity_id.into(), battle.id.into()].span());
     }
 }

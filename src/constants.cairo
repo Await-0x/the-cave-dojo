@@ -1,8 +1,11 @@
 const CARD_POOL_SIZE: u64 = 100;
 const DECK_SIZE: u8 = 20;
-const DRAW_AMOUNT: u8 = 5;
+const DRAW_AMOUNT: u8 = 6;
 const START_HEALTH: u16 = 30;
-const ENERGY: u8 = 5;
+const DISCARD_COST: u8 = 1;
+
+const MAX_ENERGY: u8 = 10;
+const START_ENERGY: u8 = 1;
 
 mod CardTypes {
     const CREATURE: felt252 = 'creature';
@@ -13,7 +16,7 @@ mod ActionTypes {
     const SUMMON_CREATURE: felt252 = 'summon_creature';
     const CAST_SPELL: felt252 = 'cast_spell';
     const ATTACK: felt252 = 'attack';
-    const VORTEX: felt252 = 'vortex';
+    const DISCARD: felt252 = 'discard';
 }
 
 mod Messages {

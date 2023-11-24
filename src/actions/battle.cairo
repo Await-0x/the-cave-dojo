@@ -16,8 +16,8 @@ mod battle_actions {
         battle::{Battle, Monster, SpecialEffects},
     };
     use thecave::utils::battle::{
-        battle_actions::{summon_creature, cast_spell, attack_monster, attack_minion, vortex},
-        battle_utils::{monster_attack, add_hand_to_deck, draw_cards},
+        battle_actions::{summon_creature, cast_spell, attack_monster, attack_minion, discard},
+        battle_utils::{monster_attack, draw_cards, get_next_energy},
     };
     use thecave::utils::monster::monster_utils;
     use thecave::constants::{Messages, ENERGY, DRAW_AMOUNT};
@@ -64,8 +64,8 @@ mod battle_actions {
                     'attack_minion' => {
                         attack_minion(world, entity, target, ref battle, ref special_effects);
                     },
-                    'vortex' => {
-                        vortex(world, entity, ref battle, ref monster, ref special_effects);
+                    'discard' => {
+                        discard(world, entity, ref battle, ref monster, ref special_effects);
                     },
                     _ => panic(array!['Unknown move']),
                 }
@@ -91,11 +91,9 @@ mod battle_actions {
                 return;
             }
 
-            add_hand_to_deck(world, ref battle);
+            draw_cards(world, ref battle, DRAW_AMOUNT - battle.hand_size);
 
-            draw_cards(world, ref battle, DRAW_AMOUNT);
-
-            battle.adventure_health = ENERGY;
+            battle.adventure_energy = get_next_energy(battle.round);
             battle.round += 1;
 
             set!(world, (battle, monster, special_effects));

@@ -1,13 +1,13 @@
-mod vortex_utils {
+mod discard_utils {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     use array::ArrayTrait;
     use thecave::models::card::{Card};
     use thecave::utils::battle::battle_utils;
-    use thecave::models::battle::{Battle, BattleTrait, HandCard, Creature, Monster, DeckCard, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard, SpecialEffects};
     use thecave::constants::{CardTypes};
 
-    fn vortex_effect(
+    fn discard_effect(
         world: IWorldDispatcher,
         entity_id: u16,
         card_id: u16,

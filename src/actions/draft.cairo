@@ -43,7 +43,7 @@ mod draft_actions {
                 DraftCard { game_id, card_id: choice.card_id, number: card_count },
             ));
 
-            let (option_1, option_2, option_3) = get_draft_options(game_id, player); 
+            let (option_1, option_2, option_3) = get_draft_options(game_id); 
 
             if card_count < DECK_SIZE {
                 set!(world, (option_1, option_2, option_3));
