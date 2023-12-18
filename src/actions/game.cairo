@@ -37,7 +37,7 @@ mod game_actions {
                 Draft { game_id, card_count: 0 }
             ));
 
-            let (option_1, option_2, option_3) = get_draft_options(game_id); 
+            let (option_1, option_2, option_3) = get_draft_options(game_id, 0); 
             set!(world, (option_1, option_2, option_3));
         }
 

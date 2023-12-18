@@ -62,12 +62,12 @@ mod battle_utils {
 
     fn draw_card(world: IWorldDispatcher, ref battle: Battle, number: u8) {
         let entropy = random::get_entropy(number);
-        let next_card: DeckCard = random::get_random_deck_card(world, entropy, battle);
-        let card: Card = card_utils::get_card(next_card.card_id);
+        let deck_card: DeckCard = random::get_random_deck_card(world, entropy, battle);
+        let card: Card = card_utils::get_card(deck_card.card_id);
 
         set!(world, (
             HandCard {
-                id: next_card.card_number,
+                id: deck_card.card_number,
                 battle_id: battle.id,
                 card_id: card.id,
                 card_type: card.card_type,
@@ -77,7 +77,7 @@ mod battle_utils {
             }, 
         ));
 
-        world.delete_entity('deck_card', array![battle.id.into(), next_card.card_number.into()].span());
+        delete!(world, (deck_card));
 
         battle.deck_size -= 1;
         battle.hand_size += 1;
@@ -97,7 +97,7 @@ mod battle_utils {
         
         if creature.health <= monster.attack {
             discard_card(world, ref battle, creature.card_id);
-            world.delete_entity('Creature', array![creature.id.into(), battle.id.into()].span());
+            delete!(world, (creature));
         } else {
             creature.health -= monster.attack;
             set!(world, (creature));
@@ -110,7 +110,6 @@ mod battle_actions {
 
     use thecave::utils::creature::creature_utils;
     use thecave::utils::spell::spell_utils;
-    use thecave::utils::attack::attack_utils;
     use thecave::utils::discard::discard_utils;
     use thecave::utils::battle::battle_utils::{battle_result, discard_card};
     use thecave::models::battle::{Battle, HandCard, Creature, Monster, Minion, SpecialEffects};
@@ -129,7 +128,7 @@ mod battle_actions {
             return;
         }
 
-        world.delete_entity('hand_card', array![entity_id.into(), battle.id.into()].span());
+        delete!(world, (card));
 
         set!(world, ( Creature {
             id: card.id,
@@ -172,39 +171,7 @@ mod battle_actions {
     ) {
         let mut creature = get!(world, (entity_id, battle.id), Creature);
         
-        attack_utils::attack_effect(world, entity_id, creature.card_id, ref battle, ref monster, ref creature, ref special_effects);
         battle_result(world, ref battle, ref creature, ref monster);
-    }
-
-    fn attack_minion(
-        world: IWorldDispatcher,
-        entity_id: u16,
-        target_id: u16,
-        ref battle: Battle,
-        ref monster: Monster,
-        ref special_effects: SpecialEffects
-    ) {
-        let mut creature = get!(world, (entity_id, battle.id), Creature);
-        let mut minion = get!(world, (battle.id, target_id), Minion);
-
-        attack_utils::attack_effect(world, entity_id, creature.card_id, ref battle, ref monster, ref creature, ref special_effects);
-
-        minion.health -= creature.attack;
-        creature.health -= minion.attack;
-
-        if creature.health <= 0 {
-            discard_card(world, ref battle, creature.card_id);
-            world.delete_entity('Creature', array![creature.id.into(), battle.id.into()].span());
-        } else {
-            set!(world, (creature));
-        }
-
-        if minion.health <= 0 {
-            monster.minions_attack -= minion.attack;
-            world.delete_entity('Minion', array![battle.id.into(), target_id.into()].span());
-        } else {
-            set!(world, (minion));
-        }
     }
 
     fn discard(
@@ -219,6 +186,7 @@ mod battle_actions {
         discard_utils::discard_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
 
         discard_card(world, ref battle, card.card_id);
-        world.delete_entity('hand_card', array![entity_id.into(), battle.id.into()].span());
+
+        delete!(world, (card));
     }
 }

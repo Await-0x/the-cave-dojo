@@ -12,6 +12,12 @@ mod CardTypes {
     const SPELL: felt252 = 'spell';
 }
 
+mod CardTags {
+    const SCAVENGER: felt252 = 'scavenger';
+    const DEMON: felt252 = 'demon';
+    const PRIEST: felt252 = 'priest';
+}
+
 mod ActionTypes {
     const SUMMON_CREATURE: felt252 = 'summon_creature';
     const CAST_SPELL: felt252 = 'cast_spell';
