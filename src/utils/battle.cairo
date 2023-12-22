@@ -112,7 +112,7 @@ mod battle_actions {
     use thecave::utils::spell::spell_utils;
     use thecave::utils::discard::discard_utils;
     use thecave::utils::battle::battle_utils::{battle_result, discard_card};
-    use thecave::models::battle::{Battle, HandCard, Creature, Monster, Minion, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, Minion};
     use thecave::constants::{CardTypes};
 
     fn summon_creature(
@@ -120,7 +120,6 @@ mod battle_actions {
         entity_id: u8,
         ref battle: Battle,
         ref monster: Monster,
-        ref special_effects: SpecialEffects
     ) {
         let card = get!(world, (entity_id, battle.id), HandCard);
 
@@ -140,7 +139,7 @@ mod battle_actions {
         } ));
 
         battle.adventure_energy -= card.cost;
-        creature_utils::summon_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
+        creature_utils::summon_effect(world, entity_id, card.card_id, ref battle, ref monster);
     }
 
     fn cast_spell(
@@ -149,7 +148,6 @@ mod battle_actions {
         target_id: u16,
         ref battle: Battle,
         ref monster: Monster,
-        ref special_effects: SpecialEffects
     ) {
         let card = get!(world, (entity_id, battle.id), HandCard);
         let mut creature = get!(world, (target_id, battle.id), Creature);
@@ -159,7 +157,7 @@ mod battle_actions {
         }
 
         battle.adventure_energy -= card.cost;
-        spell_utils::spell_effect(world, entity_id, card.card_id, ref battle, ref monster, ref creature, ref special_effects);
+        spell_utils::spell_effect(world, entity_id, card.card_id, ref battle, ref monster, ref creature);
     }
 
     fn attack_monster(
@@ -167,7 +165,6 @@ mod battle_actions {
         entity_id: u16,
         ref battle: Battle,
         ref monster: Monster,
-        ref special_effects: SpecialEffects
     ) {
         let mut creature = get!(world, (entity_id, battle.id), Creature);
         
@@ -179,11 +176,10 @@ mod battle_actions {
         entity_id: u16,
         ref battle: Battle,
         ref monster: Monster,
-        ref special_effects: SpecialEffects
     ) {
         let card = get!(world, (entity_id, battle.id), HandCard);
 
-        discard_utils::discard_effect(world, entity_id, card.card_id, ref battle, ref monster, ref special_effects);
+        discard_utils::discard_effect(world, entity_id, card.card_id, ref battle, ref monster);
 
         discard_card(world, ref battle, card.card_id);
 

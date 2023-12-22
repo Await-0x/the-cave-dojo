@@ -4,7 +4,7 @@ mod spell_utils {
     use array::ArrayTrait;
     use thecave::models::card::{Card};
     use thecave::utils::battle::battle_utils;
-    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard};
     use thecave::constants::{CardTypes};
 
     fn spell_effect(
@@ -13,8 +13,7 @@ mod spell_utils {
         card_id: u16,
         ref battle: Battle,
         ref monster: Monster,
-        ref creature: Creature,
-        ref special_effects: SpecialEffects
+        ref creature: Creature
     ) {
         if card_id == 50 {
             battle_utils::draw_cards(world, ref battle, 1);

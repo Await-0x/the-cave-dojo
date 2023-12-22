@@ -4,7 +4,19 @@ mod card_utils {
     use thecave::constants::{CardTypes, CardTags};
 
     fn get_card(id: u16) -> Card {
-        if id == 1 || id == 2 {
+        if id == 1 {
+            return Card {
+                id: 1,
+                name: 'Fireball',
+                card_type: CardTypes::CREATURE,
+                card_tag: CardTags::SPELL,
+                cost: 5,
+                attack: 0,
+                health: 0,
+            };
+        }
+
+        else if id == 2 {
             return Card {
                 id: 2,
                 name: 'Vulture',
@@ -784,7 +796,19 @@ mod card_utils {
             };
         }
 
-        else if id == 67 || id == 68 {
+        else if id == 67 {
+            return Card {
+                id: 67,
+                name: 'Lava Wave',
+                card_type: CardTypes::SPELL,
+                card_tag: CardTags::SPELL,
+                cost: 5,
+                attack: 0,
+                health: 0,
+            };
+        }
+
+        else if id == 68 {
             return Card {
                 id: 68,
                 name: 'Light Herald',

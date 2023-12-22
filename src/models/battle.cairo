@@ -74,12 +74,3 @@ struct DeckCard {
     attack: u16,
     health: u16
 }
-
-#[derive(Model, Copy, Drop, Serde)]
-struct SpecialEffects {
-    #[key]
-    battle_id: usize,
-    sleep: bool,
-    discard_cost: u8,
-    draw_extra_life_cost: bool
-}

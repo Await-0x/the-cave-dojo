@@ -2,7 +2,12 @@ use thecave::constants::{CARD_POOL_SIZE, U128_MAX, DECK_SIZE};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use thecave::models::battle::{DeckCard, Battle};
 use core::{
-    array::{SpanTrait, ArrayTrait}, integer::u256_try_as_non_zero, traits::{TryInto, Into},
+    array::{SpanTrait, ArrayTrait},
+    integer::{
+        u8_overflowing_add, u16_overflowing_add, u16_overflowing_sub, U128IntoU256,
+        u256_try_as_non_zero, u16_sqrt
+    },
+    traits::{TryInto, Into},
     clone::Clone, poseidon::poseidon_hash_span, option::OptionTrait, box::BoxTrait,
     starknet::{
         get_caller_address, ContractAddress, ContractAddressIntoFelt252, contract_address_const,
@@ -10,21 +15,24 @@ use core::{
     },
 };
 
+fn split_hash(felt_to_split: felt252) -> u64 {
+    // let (d, r) = integer::U256DivRem::div_rem(
+    //     felt_to_split.into(), u256_try_as_non_zero(U128_MAX.into()).unwrap()
+    // );
+
+    // r.try_into().unwrap()
+    get_block_timestamp().into()
+}
+
 fn get_entropy(number: u8) -> u64 {
     let mut hash_span = ArrayTrait::<felt252>::new();
 
     hash_span.append(get_block_timestamp().into());
     hash_span.append(number.into());
 
-    let poseidon: felt252 = poseidon_hash_span(hash_span.span()).into();
-
-    let (d, r) = integer::U256DivRem::div_rem(
-        poseidon.into(), u256_try_as_non_zero(U128_MAX.into()).unwrap()
-    );
-
-    r.try_into().unwrap()
+    let poseidon: felt252 = poseidon_hash_span(hash_span.span());
+    split_hash(poseidon)
 }
-
 
 fn LCG(seed: u64) -> u64 {
     let a = 1664525;
@@ -91,7 +99,7 @@ fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
 }
 
 fn get_random_card_id(entropy: u64) -> u16 {
-    (entropy % CARD_POOL_SIZE).try_into().unwrap()
+    (entropy % CARD_POOL_SIZE + 1).try_into().unwrap()
 }
 
 fn get_random_deck_card(world: IWorldDispatcher, entropy: u64, battle: Battle) -> DeckCard {
@@ -111,6 +119,10 @@ mod tests {
     use starknet::ContractAddress;
     use array::ArrayTrait;
     use core::traits::Into;
+    use core::integer::{
+        u8_overflowing_add, u16_overflowing_add, u16_overflowing_sub, U128IntoU256,
+        u256_try_as_non_zero, u16_sqrt
+    };
     use dojo::world::IWorldDispatcherTrait;
     use core::array::SpanTrait;
     use thecave::utils::random::shuffle_deck;
@@ -124,5 +136,16 @@ mod tests {
         let mut deck = shuffle_deck(seed, deck_size);
         assert(deck.len() == 20, 'deck should be decksize');
         assert(*deck.at(0) != *deck.at(1), 'should be different cards');
+    }
+
+    #[test]
+    #[available_gas(10000000)]
+    fn test_entropy() {
+        let U128_MAX: u128 = 340282366920938463463374607431768211455;
+        let felt_to_split: felt252 = '0x0982392390x2lksaedwe';
+
+        let (d, r) = integer::U256DivRem::div_rem(
+        felt_to_split.into(), u256_try_as_non_zero(U128_MAX.into()).unwrap()
+    );
     }
 }

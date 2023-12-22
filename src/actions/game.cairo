@@ -16,7 +16,7 @@ mod game_actions {
     use thecave::models::game::Game;
     use thecave::models::card::Card;
     use thecave::models::draft::{Draft, DraftCard, DraftOption};
-    use thecave::models::battle::{Battle, HandCard, DeckCard, SpecialEffects};
+    use thecave::models::battle::{Battle, HandCard, DeckCard};
     use thecave::utils::cards::card_utils::{get_card};
     use thecave::utils::monsters::monster_utils::{get_monster};
     use thecave::utils::draft::draft_utils::{get_draft_options};
@@ -67,12 +67,6 @@ mod game_actions {
                     deck_number: 1,
                     discard_count: 0,
                 },
-                SpecialEffects {
-                    battle_id,
-                    sleep: true,
-                    discard_cost: DISCARD_COST,
-                    draw_extra_life_cost: false
-                }
             ));
 
             let monster = get_monster(battle_id, game.battles_won);

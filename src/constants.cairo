@@ -16,6 +16,7 @@ mod CardTags {
     const SCAVENGER: felt252 = 'scavenger';
     const DEMON: felt252 = 'demon';
     const PRIEST: felt252 = 'priest';
+    const SPELL: felt252 = 'spell';
 }
 
 mod ActionTypes {
