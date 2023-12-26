@@ -20,7 +20,7 @@ mod game_actions {
     use thecave::utils::cards::card_utils::{get_card};
     use thecave::utils::monsters::monster_utils::{get_monster};
     use thecave::utils::draft::draft_utils::{get_draft_options};
-    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, DISCARD_COST, START_HEALTH, START_ENERGY};
+    use thecave::constants::{Messages, DECK_SIZE, DRAW_AMOUNT, DISCARD_COST, MAX_HEALTH, START_ENERGY};
     use thecave::utils::random::shuffle_deck;
 
     #[external(v0)]
@@ -58,12 +58,12 @@ mod game_actions {
                 Battle {
                     id: battle_id,
                     game_id,
-                    adventurer_health: START_HEALTH,
+                    adventurer_health: MAX_HEALTH,
                     adventurer_energy: START_ENERGY,
                     round: 1,
                     deck_size: (DECK_SIZE - DRAW_AMOUNT).into(),
-                    hand_size: DRAW_AMOUNT,
                     deck_number: 1,
+                    deck_index: DRAW_AMOUNT,
                     discard_count: 0,
                 },
                 GlobalEffects {
@@ -86,7 +86,7 @@ mod game_actions {
                     break;
                 }
 
-                let draft_card: DraftCard = get!(world, (game_id, 1, *shuffled_deck.at(i.into())), DraftCard);
+                let draft_card: DraftCard = get!(world, (game_id, *shuffled_deck.at(i.into())), DraftCard);
                 let card: Card = get_card(draft_card.card_id);
 
                 if i < DRAW_AMOUNT.into() {

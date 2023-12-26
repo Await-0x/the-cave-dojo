@@ -15,17 +15,14 @@ mod spell_utils {
         ref monster: Monster,
         ref creature: Creature
     ) {
-        if card_id == 50 {
-            battle_utils::draw_cards(world, ref battle, 1);
-        }
-        else if card_id == 51 {
+        if card_id == 51 {
             battle_utils::increase_energy(ref battle, 3);
         }
         else if card_id == 52 {
             monster.taunted_by = creature.id;
         }
         else if card_id == 53 {
-            battle_utils::increase_health(ref battle, 3);
+            battle_utils::heal_adventurer(ref battle, 3);
         }
         else if card_id == 54 {
             monster.health -= 3;

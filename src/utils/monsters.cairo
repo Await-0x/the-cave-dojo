@@ -1,8 +1,11 @@
 mod monster_utils {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use array::ArrayTrait;
-    use thecave::models::battle::{Monster, Battle, Creature};
-    use thecave::utils::battle::battle_utils::battle_result;
+    use thecave::models::battle::{Monster, Battle, Creature, Board};
+    use thecave::utils::{
+        battle::battle_utils::battle_result,
+        board::board_utils
+    };
 
     fn get_monster(battle_id: usize, battles_won: u16) -> Monster {
         // let monster_id = battles_won % 7;
@@ -20,24 +23,26 @@ mod monster_utils {
         };
     }
 
-    fn monster_attack(world: IWorldDispatcher, ref battle: Battle, ref monster: Monster) {
+    fn monster_attack(world: IWorldDispatcher, ref battle: Battle, ref monster: Monster, ref board: Board) {
         let mut damage = 0;
 
-        if monster.taunted {
+        if monster.taunted == true {
             monster.taunted = false;
-            
-            let mut creature: Creature = get!(world, (monster.taunted_by, battle.id), Creature);
+        
+            let mut creature = board_utils::get_creature_by_id(ref board, monster.taunted_by);
 
-            if battle.round >= monster.enrage_turn.into() && monster.attack > creature.health && !creature.shield {
-                damage += (monster.attack - creature.health);
+            if creature.card_id != 0 {
+                if battle.round >= monster.enrage_turn.into() && monster.attack > creature.health && !creature.shield {
+                    damage += (monster.attack - creature.health);
+                }
+
+                battle_result(world, ref battle, ref creature, ref monster);
+            } else {
+                damage += monster.attack;
             }
-
-            battle_result(world, ref battle, ref creature, ref monster);
         } else {
             damage += monster.attack;
         }
-
-        damage += monster.minions_attack;
 
         if damage >= battle.adventurer_health {
             battle.adventurer_health = 0;

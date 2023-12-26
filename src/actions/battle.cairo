@@ -17,7 +17,7 @@ mod battle_actions {
     };
     use thecave::utils::battle::{
         battle_actions::{summon_creature, cast_spell, attack_monster, discard},
-        battle_utils::{get_board, get_hand, draw_cards, get_next_energy},
+        battle_utils::{get_next_energy},
     };
     use thecave::utils::{
         monsters::monster_utils,
@@ -42,7 +42,13 @@ mod battle_actions {
             let mut monster = get!(world, (battle.id), Monster);
             assert(monster.health > 0, Messages::GAME_OVER);
 
-            let mut round_effects = RoundEffects {adventurer_damaged: false, adventurer_healed: false};
+            let mut round_effects = RoundEffects {
+                adventurer_damaged: false,
+                adventurer_healed: false,
+                creature_reduction_if_healed: 0,
+                creature_reduction_if_damaged: 0,
+                spell_reduction_if_damaged: 0,
+            };
             let mut global_effects = get!(world, (battle.id), GlobalEffects);
             
             let mut board = board_utils::load_board(world, battle.id);
@@ -70,10 +76,10 @@ mod battle_actions {
                     cast_spell(world, entity_id, target_id, ref battle, ref monster);
                 }
                 else if action_type == 'attack_monster' {
-                    attack_monster(world, entity_id, ref battle, ref monster);
+                    attack_monster(world, entity_id, ref battle, ref monster, ref board);
                 }
                 else if action_type == 'discard' {
-                    discard(world, entity_id, ref battle, ref monster);
+                    discard(world, entity_id, ref battle, ref monster, ref hand);
                 }
                 else {
                     panic(array!['Unknown move']);
@@ -86,27 +92,27 @@ mod battle_actions {
                 game.in_battle = false;
                 game.battles_won += 1;
 
-                monster.health = 0;
-
                 set!(world, (game, monster));
                 return;
             }
 
             monster.attack += 1;
-            monster_utils::monster_attack(world, ref battle, ref monster);
+            monster_utils::monster_attack(world, ref battle, ref monster, ref board);
 
             if battle.adventurer_health < 1 {
                 game.active = false;
                 game.in_battle = false;
 
-                set!(world, (game, battle));
+                set!(world, (game, battle, monster));
                 return;
             }
 
-            draw_cards(world, ref battle, DRAW_AMOUNT - battle.hand_size);
+            board_utils::set_board(world, ref board);
 
             battle.adventurer_energy = get_next_energy(battle.round);
             battle.round += 1;
+
+            hand_utils::draw_cards(world, ref hand, ref battle);
 
             set!(world, (battle, monster));
         }

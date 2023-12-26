@@ -1,7 +1,7 @@
 const CARD_POOL_SIZE: u64 = 100;
 const DECK_SIZE: u8 = 20;
 const DRAW_AMOUNT: u8 = 6;
-const START_HEALTH: u16 = 30;
+const MAX_HEALTH: u16 = 30;
 const DISCARD_COST: u8 = 1;
 const MAX_BOARD: u8 = 6;
 

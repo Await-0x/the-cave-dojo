@@ -6,8 +6,8 @@ struct Battle {
     adventurer_health: u16,
     adventurer_energy: u8,
     round: u16,
-    deck_size: u16,
-    hand_size: u8,
+    deck_size: u8,
+    deck_index: u8,
     deck_number: u8,
     discard_count: u8,
 }
@@ -113,4 +113,7 @@ struct Hand {
 struct RoundEffects {   
     adventurer_damaged: bool,
     adventurer_healed: bool,
+    creature_reduction_if_healed: u8,
+    creature_reduction_if_damaged: u8,
+    spell_reduction_if_damaged: u8,
 }

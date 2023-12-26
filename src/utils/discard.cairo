@@ -14,8 +14,5 @@ mod discard_utils {
         ref battle: Battle,
         ref monster: Monster,
     ) {
-        if card_id == 50 {
-            battle_utils::draw_cards(world, ref battle, 1);
-        }
     }
 }

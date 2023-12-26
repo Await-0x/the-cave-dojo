@@ -56,24 +56,54 @@ mod summon_utils {
 
         else if id == 36 {
             if round_effects.adventurer_damaged == true {
-                hand_utils::reduce_creature_cost(ref hand, 1);
+                round_effects.creature_reduction_if_damaged += 1;
             }
         }
 
-        else if id == 47 {
-
+        else if id == 40 {
+            if round_effects.adventurer_damaged == true {
+                round_effects.spell_reduction_if_damaged += 1;
+            }
         }
 
-        else if id == 65 {
-
+        else if id == 44 {
+            battle_utils::self_damage_adventurer(ref battle, 2);
         }
 
-        else if id == 80 {
+        else if id == 63 {
+            battle_utils::self_damage_adventurer(ref battle, 5);
+        }
 
+        else if id == 64 {
+            let demon_count = board_utils::count_type(ref board, CardTags::DEMON);
+            creature.attack += demon_count;
+            creature.health += demon_count;
+        }
+
+        else if id == 69 {
+            if round_effects.adventurer_healed == true {
+                round_effects.creature_reduction_if_damaged += 1;
+            }
+        }
+
+        else if id == 73 {
+            if round_effects.adventurer_healed == true {
+                round_effects.spell_reduction_if_damaged += 1;
+            }
+        }
+
+        else if id == 74 {
+            board_utils::increase_creature_stats(ref board, 0, 1);
+        }
+
+        else if id == 75 {
+            battle_utils::heal_adventurer(ref battle, 2);
         }
 
         else if id == 98 {
-
+            let priest_count = board_utils::count_type(ref board, CardTags::PRIEST);
+            creature.attack += priest_count;
+            creature.health += priest_count;
         }
     }
 }

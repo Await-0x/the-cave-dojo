@@ -18,6 +18,58 @@ mod board_utils {
         }
     }
 
+    fn set_board(world: IWorldDispatcher, ref board: Board) {
+        if board.creature1.card_id != 0 {
+            set!(world, (board.creature1));
+        }
+        if board.creature2.card_id != 0 {
+            set!(world, (board.creature2));
+        }
+        if board.creature3.card_id != 0 {
+            set!(world, (board.creature3));
+        }
+        if board.creature4.card_id != 0 {
+            set!(world, (board.creature4));
+        }
+        if board.creature5.card_id != 0 {
+            set!(world, (board.creature5));
+        }
+        if board.creature6.card_id != 0 {
+            set!(world, (board.creature6));
+        }
+    }
+
+    fn no_creature() -> Creature {
+        Creature {
+            id: 0,
+            battle_id: 0,
+            card_id: 0,
+            card_tag: '',
+            attack: 0,
+            health: 0,
+            shield: false,
+            resting_round: 0,
+        }
+    }
+
+    fn get_creature_by_id(ref board: Board, id: u8) -> Creature {
+        if id == 1 {
+            return board.creature1;
+        } else if id == 2 {
+            return board.creature2;
+        } else if id == 3 {
+            return board.creature3;
+        } else if id == 4 {
+            return board.creature4;
+        } else if id == 5 {
+            return board.creature5;
+        } else if id == 6 {
+            return board.creature6;
+        }
+
+        no_creature()
+    }
+
     fn count_card_id(ref board: Board, card_id: u16) -> u8 {
         let mut count = 0;
 
@@ -49,31 +101,57 @@ mod board_utils {
     }
 
     fn get_board_slot(ref board: Board) -> u8 {
-        if board.creature1.id == 0 {
+        if board.creature1.card_id == 0 {
             return 1;
         }
         
-        else if board.creature2.id == 0 {
+        else if board.creature2.card_id == 0 {
             return 2;
         }
 
-        else if board.creature3.id == 0 {
+        else if board.creature3.card_id == 0 {
             return 3;
         }
 
-        else if board.creature4.id == 0 {
+        else if board.creature4.card_id == 0 {
             return 4;
         }
 
-        else if board.creature5.id == 0 {
+        else if board.creature5.card_id == 0 {
             return 5;
         }
 
-        else if board.creature6.id == 0 {
+        else if board.creature6.card_id == 0 {
             return 6;
         }
 
         return 0;
+    }
+
+    fn update_creature(ref board: Board, slot: u8, ref creature: Creature) {
+        if slot == 1 {
+            board.creature1 = creature;
+        }
+
+        else if slot == 2 {
+            board.creature2 = creature;
+        }
+
+        else if slot == 3 {
+            board.creature3 = creature;
+        }
+
+        else if slot == 4 {
+            board.creature4 = creature;
+        }
+
+        else if slot == 5 {
+            board.creature5 = creature;
+        }
+
+        else if slot == 6 {
+            board.creature6 = creature;
+        }
     }
 
     fn count_type(ref board: Board, _type: felt252) -> u16 {
@@ -111,22 +189,27 @@ mod board_utils {
             board.creature1.attack += attack;
             board.creature1.health += health;
         }
+
         if board.creature2.card_tag == _type {
             board.creature2.attack += attack;
             board.creature2.health += health;
         }
+        
         if board.creature3.card_tag == _type {
             board.creature3.attack += attack;
             board.creature3.health += health;
         }
+
         if board.creature4.card_tag == _type {
             board.creature4.attack += attack;
             board.creature4.health += health;
         }
+
         if board.creature5.card_tag == _type {
             board.creature5.attack += attack;
             board.creature5.health += health;
         }
+
         if board.creature6.card_tag == _type {
             board.creature6.attack += attack;
             board.creature6.health += health;
@@ -138,25 +221,62 @@ mod board_utils {
             board.creature1.attack -= attack;
             board.creature1.health -= health;
         }
+
         if board.creature2.card_tag == _type {
             board.creature2.attack -= attack;
             board.creature2.health -= health;
         }
+
         if board.creature3.card_tag == _type {
             board.creature3.attack -= attack;
             board.creature3.health -= health;
         }
+
         if board.creature4.card_tag == _type {
             board.creature4.attack -= attack;
             board.creature4.health -= health;
         }
+
         if board.creature5.card_tag == _type {
             board.creature5.attack -= attack;
             board.creature5.health -= health;
         }
+
         if board.creature6.card_tag == _type {
             board.creature6.attack -= attack;
             board.creature6.health -= health;
+        }
+    }
+
+    fn increase_creature_stats(ref board: Board, attack: u16, health: u16) {
+        if board.creature1.card_id != 0 {
+            board.creature1.attack += attack;
+            board.creature1.health += health;
+        }
+
+        if board.creature2.card_id != 0 {
+            board.creature2.attack += attack;
+            board.creature2.health += health;
+        }
+
+        if board.creature3.card_id != 0 {
+            board.creature3.attack += attack;
+            board.creature3.health += health;
+        }
+
+        if board.creature4.card_id != 0 {
+            board.creature4.attack += attack;
+            board.creature4.health += health;
+        }
+
+        if board.creature5.card_id != 0 {
+            board.creature5.attack += attack;
+            board.creature5.health += health;
+        }
+
+        if board.creature6.card_id != 0 {
+            board.creature6.attack += attack;
+            board.creature6.health += health;
         }
     }
 }
@@ -195,7 +315,5 @@ mod tests {
         };
 
         board.creature1.attack += 2;
-
-        println!("{}", board.creature1.attack);
     }
 }
