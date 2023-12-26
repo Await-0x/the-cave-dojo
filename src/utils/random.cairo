@@ -64,7 +64,7 @@ fn remove_card(deck: Span<u8>, index: u8) -> Array<u8> {
     new_deck
 }
 
-fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
+fn shuffle_deck(seed: u8, deck_size: u8) -> Array<u8> {
     let mut original_deck: Array<u8> = ArrayTrait::new();
     let mut shuffled_deck: Array<u8> = ArrayTrait::new();
 
@@ -79,7 +79,7 @@ fn shuffle_deck(seed: u64, deck_size: u8) -> Array<u8> {
         i += 1;
     };
 
-    let mut new_seed: u64 = seed;
+    let mut new_seed: u64 = get_entropy(seed);
 
     loop {
         if shuffled_deck.len() == deck_size.into() {

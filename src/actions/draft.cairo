@@ -33,14 +33,14 @@ mod draft_actions {
             let mut choice = get!(world, (game_id, option_id), DraftOption);
             let mut draft = get!(world, (game_id), Draft);
 
+            set!(world, (
+                DraftCard { game_id, card_id: choice.card_id, number: draft.card_count },
+            ));
+
             let card_count = draft.card_count + 1;
 
             set!(world, (
                 Draft { game_id, card_count },
-            ));
-
-            set!(world, (
-                DraftCard { game_id, card_id: choice.card_id, number: card_count },
             ));
 
             let (option_1, option_2, option_3) = get_draft_options(game_id, card_count); 

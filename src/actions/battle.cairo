@@ -4,7 +4,7 @@ use array::ArrayTrait;
 
 #[starknet::interface]
 trait Ibattle_actions<TContractState> {
-    fn end_turn(self: @TContractState);
+    fn end_turn(self: @TContractState, battle_id: usize, player_actions: Span<Span<felt252>>);
 }
 
 #[dojo::contract]
@@ -13,30 +13,40 @@ mod battle_actions {
     use super::Ibattle_actions;
     use thecave::models::{
         game::Game,
-        battle::{Battle, Monster},
+        battle::{Battle, Monster, RoundEffects, GlobalEffects},
     };
     use thecave::utils::battle::{
-        battle_actions::{summon_creature, cast_spell, attack_monster, attack_minion, discard},
-        battle_utils::{monster_attack, draw_cards, get_next_energy},
+        battle_actions::{summon_creature, cast_spell, attack_monster, discard},
+        battle_utils::{get_board, get_hand, draw_cards, get_next_energy},
     };
-    use thecave::utils::monster::monster_utils;
-    use thecave::constants::{Messages, ENERGY, DRAW_AMOUNT};
+    use thecave::utils::{
+        monsters::monster_utils,
+        board::board_utils,
+        hand::hand_utils
+    };
+    use thecave::constants::{Messages, START_ENERGY, DRAW_AMOUNT};
 
     #[external(v0)]
     impl battle_actionsImpl of Ibattle_actions<ContractState> {
-        fn end_turn(self: @ContractState, battle_id: usize, player_actions: Array<Tuple<(felt252, usize, usize)>>) {
+        fn end_turn(self: @ContractState, battle_id: usize, player_actions: Span<Span<felt252>>) {
             let world = self.world_dispatcher.read();
             let player = get_caller_address();
 
             let mut battle = get!(world, (battle_id), Battle); 
-            let mut game = get!(world, (battle.game_id) Game);
+            let mut game = get!(world, (battle.game_id), Game);
 
-            assert(battle.adventure_health > 0, Messages::GAME_OVER);
+            assert(battle.adventurer_health > 0, Messages::GAME_OVER);
             assert(game.player == player, Messages::NOT_OWNER);
             assert(game.active == true, Messages::NOT_IN_DRAFT);
 
             let mut monster = get!(world, (battle.id), Monster);
             assert(monster.health > 0, Messages::GAME_OVER);
+
+            let mut round_effects = RoundEffects {adventurer_damaged: false, adventurer_healed: false};
+            let mut global_effects = get!(world, (battle.id), GlobalEffects);
+            
+            let mut board = board_utils::load_board(world, battle.id);
+            let mut hand = hand_utils::load_hand(world, battle.id);
 
             let action_count = player_actions.len();
             let mut action_index = 0;
@@ -47,27 +57,30 @@ mod battle_actions {
                     break;
                 }
 
-                let (action_type, entity, target) = *player_actions.at(action_index);
+                let action = *player_actions.at(action_index);
 
-                match action_type {
-                    'summon_creature' => { 
-                        summon_creature(world, entity, ref battle, ref monster);
-                    },
-                    'cast_spell' => {
-                        cast_spell(world, entity, target, ref battle);
-                    },
-                    'attack_monster' => {
-                        attack_monster(world, entity, ref battle, ref monster);
-                    },
-                    'attack_minion' => {
-                        attack_minion(world, entity, target, ref battle);
-                    },
-                    'discard' => {
-                        discard(world, entity, ref battle, ref monster);
-                    },
-                    _ => panic(array!['Unknown move']),
+                let action_type: felt252 = *action.at(0);
+                let entity_id: u8 = (*action.at(1)).try_into().unwrap();
+                let target_id: u16 = (*action.at(2)).try_into().unwrap();
+
+                if action_type == 'summon_creature' {
+                    summon_creature(world, entity_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
                 }
-            }
+                else if action_type == 'cast_spell' {
+                    cast_spell(world, entity_id, target_id, ref battle, ref monster);
+                }
+                else if action_type == 'attack_monster' {
+                    attack_monster(world, entity_id, ref battle, ref monster);
+                }
+                else if action_type == 'discard' {
+                    discard(world, entity_id, ref battle, ref monster);
+                }
+                else {
+                    panic(array!['Unknown move']);
+                }
+
+                action_index += 1;
+            };
 
             if monster.health < 1 {
                 game.in_battle = false;
@@ -79,9 +92,10 @@ mod battle_actions {
                 return;
             }
 
+            monster.attack += 1;
             monster_utils::monster_attack(world, ref battle, ref monster);
 
-            if battle.adventure_health < 1 {
+            if battle.adventurer_health < 1 {
                 game.active = false;
                 game.in_battle = false;
 
@@ -91,7 +105,7 @@ mod battle_actions {
 
             draw_cards(world, ref battle, DRAW_AMOUNT - battle.hand_size);
 
-            battle.adventure_energy = get_next_energy(battle.round);
+            battle.adventurer_energy = get_next_energy(battle.round);
             battle.round += 1;
 
             set!(world, (battle, monster));

@@ -16,7 +16,7 @@ mod game_actions {
     use thecave::models::game::Game;
     use thecave::models::card::Card;
     use thecave::models::draft::{Draft, DraftCard, DraftOption};
-    use thecave::models::battle::{Battle, HandCard, DeckCard};
+    use thecave::models::battle::{Battle, HandCard, DeckCard, GlobalEffects};
     use thecave::utils::cards::card_utils::{get_card};
     use thecave::utils::monsters::monster_utils::{get_monster};
     use thecave::utils::draft::draft_utils::{get_draft_options};
@@ -45,7 +45,7 @@ mod game_actions {
             let world = self.world_dispatcher.read();
             let player = get_caller_address();
             
-            let game = get!(world, (game_id), Game);
+            let mut game = get!(world, (game_id), Game);
 
             assert(game.player == player, Messages::NOT_OWNER);
             assert(game.active == true, Messages::GAME_OVER);
@@ -58,15 +58,21 @@ mod game_actions {
                 Battle {
                     id: battle_id,
                     game_id,
-                    adventure_health: START_HEALTH,
-                    adventure_energy: START_ENERGY,
+                    adventurer_health: START_HEALTH,
+                    adventurer_energy: START_ENERGY,
                     round: 1,
                     deck_size: (DECK_SIZE - DRAW_AMOUNT).into(),
-                    board_count: 0,
                     hand_size: DRAW_AMOUNT,
                     deck_number: 1,
                     discard_count: 0,
                 },
+                GlobalEffects {
+                    battle_id: battle_id,
+                    scavenger_attack_bonus: 0,
+                    priest_attack_bonus: 0,
+                    demon_attack_bonus: 0,
+                    scavengers_discarded: 0
+                }
             ));
 
             let monster = get_monster(battle_id, game.battles_won);
@@ -74,22 +80,23 @@ mod game_actions {
 
             let shuffled_deck = shuffle_deck(1, DECK_SIZE);
             
-            let mut i = 0;
+            let mut i: u8 = 0;
             loop {
-                if i >= shuffled_deck.len() {
+                if i.into() >= shuffled_deck.len() {
                     break;
                 }
 
-                let draft_card: DraftCard = get!(world, (game_id, *shuffled_deck.at(i)), DraftCard);
+                let draft_card: DraftCard = get!(world, (game_id, 1, *shuffled_deck.at(i.into())), DraftCard);
                 let card: Card = get_card(draft_card.card_id);
 
                 if i < DRAW_AMOUNT.into() {
                     set!(world, (
                         HandCard {
-                            id: i.try_into().unwrap(),
+                            id: i + 1,
                             battle_id,
                             card_id: card.id,
                             card_type: card.card_type,
+                            card_tag: card.card_tag,
                             cost: card.cost,
                             attack: card.attack,
                             health: card.health
@@ -103,6 +110,7 @@ mod game_actions {
                             deck_number: 1,
                             card_id: card.id,
                             card_type: card.card_type,
+                            card_tag: card.card_tag,
                             cost: card.cost,
                             attack: card.attack,
                             health: card.health
@@ -112,6 +120,9 @@ mod game_actions {
 
                 i += 1;
             };
+
+            game.in_battle = true;
+            set!(world, (game));
         }
     }
 }

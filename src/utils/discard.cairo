@@ -9,7 +9,7 @@ mod discard_utils {
 
     fn discard_effect(
         world: IWorldDispatcher,
-        entity_id: u16,
+        entity_id: u8,
         card_id: u16,
         ref battle: Battle,
         ref monster: Monster,

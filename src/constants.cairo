@@ -3,20 +3,21 @@ const DECK_SIZE: u8 = 20;
 const DRAW_AMOUNT: u8 = 6;
 const START_HEALTH: u16 = 30;
 const DISCARD_COST: u8 = 1;
+const MAX_BOARD: u8 = 6;
 
 const MAX_ENERGY: u8 = 10;
 const START_ENERGY: u8 = 1;
 
 mod CardTypes {
-    const CREATURE: felt252 = 'creature';
-    const SPELL: felt252 = 'spell';
+    const CREATURE: felt252 = 'Creature';
+    const SPELL: felt252 = 'Spell';
 }
 
 mod CardTags {
-    const SCAVENGER: felt252 = 'scavenger';
-    const DEMON: felt252 = 'demon';
-    const PRIEST: felt252 = 'priest';
-    const SPELL: felt252 = 'spell';
+    const SCAVENGER: felt252 = 'Scavenger';
+    const DEMON: felt252 = 'Demon';
+    const PRIEST: felt252 = 'Priest';
+    const SPELL: felt252 = 'Spell';
 }
 
 mod ActionTypes {

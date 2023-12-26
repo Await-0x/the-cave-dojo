@@ -1206,12 +1206,12 @@ mod card_utils {
 
         else {
             return Card {
-                id: 0,
+                id: 1,
                 name: 'Unknown',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
                 cost: 0,
-                attack: 0,
+                attack: id,
                 health: 0,
             };
         }
