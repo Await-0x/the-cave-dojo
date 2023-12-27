@@ -18,6 +18,27 @@ mod hand_utils {
         }
     }
 
+    fn set_hand(world: IWorldDispatcher, ref hand: Hand) {
+        if hand.hand1.card_id != 0 {
+            set!(world, (hand.hand1));
+        }
+        if hand.hand2.card_id != 0 {
+            set!(world, (hand.hand2));
+        }
+        if hand.hand3.card_id != 0 {
+            set!(world, (hand.hand3));
+        }
+        if hand.hand4.card_id != 0 {
+            set!(world, (hand.hand4));
+        }
+        if hand.hand5.card_id != 0 {
+            set!(world, (hand.hand5));
+        }
+        if hand.hand6.card_id != 0 {
+            set!(world, hand.hand6));
+        }
+    }
+
     fn no_card() -> HandCard {
         HandCard {
             id: 0,
@@ -131,6 +152,32 @@ mod hand_utils {
 
         if hand.hand6.card_id == 0 {
             set!(world, (get_next_card(world, ref battle, 6)));
+        }
+    }
+
+    fn reduce_cost(ref hand: Hand, card_id: u16, cost: u8) {
+        if hand.hand1.card_id == card_id {
+            hand.hand1.cost -= cost;
+        }
+
+        if hand.hand2.card_id == card_id {
+            hand.hand2.cost -= cost;
+        }
+
+        if hand.hand3.card_id == card_id {
+            hand.hand3.cost -= cost;
+        }
+
+        if hand.hand4.card_id == card_id {
+            hand.hand4.cost -= cost;
+        }
+
+        if hand.hand5.card_id == card_id {
+            hand.hand5.cost -= cost;
+        }
+
+        if hand.hand6.card_id == card_id {
+            hand.hand6.cost -= cost;
         }
     }
 }

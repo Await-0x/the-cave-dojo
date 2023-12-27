@@ -8,3 +8,5 @@ mod spell;
 mod discard;
 mod board;
 mod hand;
+mod death;
+mod adventurer;

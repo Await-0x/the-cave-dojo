@@ -48,6 +48,8 @@ mod battle_actions {
                 creature_reduction_if_healed: 0,
                 creature_reduction_if_damaged: 0,
                 spell_reduction_if_damaged: 0,
+                creatures_discarded: 0,
+                spell_reduction: 0
             };
             let mut global_effects = get!(world, (battle.id), GlobalEffects);
             
@@ -76,10 +78,10 @@ mod battle_actions {
                     cast_spell(world, entity_id, target_id, ref battle, ref monster);
                 }
                 else if action_type == 'attack_monster' {
-                    attack_monster(world, entity_id, ref battle, ref monster, ref board);
+                    attack_monster(world, entity_id, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'discard' {
-                    discard(world, entity_id, ref battle, ref monster, ref hand);
+                    discard(world, entity_id, ref battle, ref monster, ref hand, ref board, ref round_effects);
                 }
                 else {
                     panic(array!['Unknown move']);
@@ -97,7 +99,7 @@ mod battle_actions {
             }
 
             monster.attack += 1;
-            monster_utils::monster_attack(world, ref battle, ref monster, ref board);
+            monster_utils::monster_attack(world, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
 
             if battle.adventurer_health < 1 {
                 game.active = false;
@@ -112,6 +114,7 @@ mod battle_actions {
             battle.adventurer_energy = get_next_energy(battle.round);
             battle.round += 1;
 
+            hand_utils::set_hand(world, ref hand);
             hand_utils::draw_cards(world, ref hand, ref battle);
 
             set!(world, (battle, monster));

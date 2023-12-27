@@ -83,9 +83,6 @@ struct DeckCard {
 struct GlobalEffects {
     #[key]
     battle_id: usize,
-    scavenger_attack_bonus: u8,
-    priest_attack_bonus: u8,
-    demon_attack_bonus: u8,
     scavengers_discarded: u8,
 }
 
@@ -115,5 +112,8 @@ struct RoundEffects {
     adventurer_healed: bool,
     creature_reduction_if_healed: u8,
     creature_reduction_if_damaged: u8,
+    spell_reduction_if_healed: u8,
     spell_reduction_if_damaged: u8,
+    spell_reduction: u8,
+    creatures_discarded: u8
 }

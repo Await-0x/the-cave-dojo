@@ -70,6 +70,24 @@ mod board_utils {
         no_creature()
     }
 
+    fn get_creature_by_card_id(ref board: Board, card_id: u16) -> Creature {
+        if board.creature1.card_id == card_id {
+            return board.creature1;
+        } else if board.creature2.card_id == card_id {
+            return board.creature2;
+        } else if board.creature3.card_id == card_id {
+            return board.creature3;
+        } else if board.creature4.card_id == card_id {
+            return board.creature4;
+        } else if board.creature5.card_id == card_id {
+            return board.creature5;
+        } else if board.creature6.card_id == card_id {
+            return board.creature6;
+        }
+
+        no_creature()
+    }
+
     fn count_card_id(ref board: Board, card_id: u16) -> u8 {
         let mut count = 0;
 
@@ -100,7 +118,7 @@ mod board_utils {
         return count;
     }
 
-    fn get_board_slot(ref board: Board) -> u8 {
+    fn get_available_slot(ref board: Board) -> u8 {
         if board.creature1.card_id == 0 {
             return 1;
         }
@@ -248,7 +266,39 @@ mod board_utils {
         }
     }
 
-    fn increase_creature_stats(ref board: Board, attack: u16, health: u16) {
+    fn increase_creature_stats(ref board: Board, card_id: u16, attack: u16, health: u16) {
+        if board.creature1.card_id == card_id {
+            board.creature1.attack += attack;
+            board.creature1.health += health;
+        }
+
+        if board.creature2.card_id == card_id {
+            board.creature2.attack += attack;
+            board.creature2.health += health;
+        }
+
+        if board.creature3.card_id == card_id {
+            board.creature3.attack += attack;
+            board.creature3.health += health;
+        }
+
+        if board.creature4.card_id == card_id {
+            board.creature4.attack += attack;
+            board.creature4.health += health;
+        }
+
+        if board.creature5.card_id == card_id {
+            board.creature5.attack += attack;
+            board.creature5.health += health;
+        }
+
+        if board.creature6.card_id == card_id {
+            board.creature6.attack += attack;
+            board.creature6.health += health;
+        }
+    }
+
+    fn increase_all_creatures_stats(ref board: Board, attack: u16, health: u16) {
         if board.creature1.card_id != 0 {
             board.creature1.attack += attack;
             board.creature1.health += health;
@@ -277,6 +327,58 @@ mod board_utils {
         if board.creature6.card_id != 0 {
             board.creature6.attack += attack;
             board.creature6.health += health;
+        }
+    }
+
+    fn apply_shield(ref board: Board, card_id: u16) {
+        if board.creature1.card_id == card_id {
+            board.creature1.shield = true;
+        }
+
+        if board.creature2.card_id == card_id {
+            board.creature2.shield = true;
+        }
+
+        if board.creature3.card_id == card_id {
+            board.creature3.shield = true;
+        }
+
+        if board.creature4.card_id == card_id {
+            board.creature4.shield = true;
+        }
+
+        if board.creature5.card_id == card_id {
+            board.creature5.shield = true;
+        }
+
+        if board.creature6.card_id == card_id {
+            board.creature6.shield = true;
+        }
+    }
+
+    fn apply_charge(ref board: Board, card_id: u16) {
+        if board.creature1.card_id == card_id {
+            board.creature1.resting_round = 0;
+        }
+
+        if board.creature2.card_id == card_id {
+            board.creature2.resting_round = 0;
+        }
+
+        if board.creature3.card_id == card_id {
+            board.creature3.resting_round = 0;
+        }
+
+        if board.creature4.card_id == card_id {
+            board.creature4.resting_round = 0;
+        }
+
+        if board.creature5.card_id == card_id {
+            board.creature5.resting_round = 0;
+        }
+
+        if board.creature6.card_id == card_id {
+            board.creature6.resting_round = 0;
         }
     }
 }

@@ -1,7 +1,7 @@
 mod monster_utils {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use array::ArrayTrait;
-    use thecave::models::battle::{Monster, Battle, Creature, Board};
+    use thecave::models::battle::{Monster, Battle, Creature, Board, RoundEffects, GlobalEffects};
     use thecave::utils::{
         battle::battle_utils::battle_result,
         board::board_utils
@@ -23,7 +23,14 @@ mod monster_utils {
         };
     }
 
-    fn monster_attack(world: IWorldDispatcher, ref battle: Battle, ref monster: Monster, ref board: Board) {
+    fn monster_attack(
+        world: IWorldDispatcher,
+        ref battle: Battle,
+        ref monster: Monster,
+        ref board: Board,
+        ref round_effects: RoundEffects,
+        ref global_effects: GlobalEffects
+    ) {
         let mut damage = 0;
 
         if monster.taunted == true {
@@ -36,7 +43,7 @@ mod monster_utils {
                     damage += (monster.attack - creature.health);
                 }
 
-                battle_result(world, ref battle, ref creature, ref monster);
+                battle_result(world, ref battle, ref creature, ref monster, ref board, ref round_effects, ref global_effects);
             } else {
                 damage += monster.attack;
             }

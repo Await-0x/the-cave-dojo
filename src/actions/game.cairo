@@ -68,9 +68,6 @@ mod game_actions {
                 },
                 GlobalEffects {
                     battle_id: battle_id,
-                    scavenger_attack_bonus: 0,
-                    priest_attack_bonus: 0,
-                    demon_attack_bonus: 0,
                     scavengers_discarded: 0
                 }
             ));

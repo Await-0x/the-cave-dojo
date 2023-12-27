@@ -93,7 +93,7 @@ mod summon_utils {
         }
 
         else if id == 74 {
-            board_utils::increase_creature_stats(ref board, 0, 1);
+            board_utils::increase_all_creatures_stats(ref board, 0, 1);
         }
 
         else if id == 75 {

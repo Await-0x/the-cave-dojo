@@ -23,7 +23,7 @@ mod battle_actions {
         ref round_effects: RoundEffects,
         ref global_effects: GlobalEffects
     ) {
-        let board_slot = board_utils::get_board_slot(ref board);
+        let board_slot = board_utils::get_available_slot(ref board);
         if board_slot == 0 {
             return;
         }
@@ -75,7 +75,9 @@ mod battle_actions {
         entity_id: u8,
         ref battle: Battle,
         ref monster: Monster,
-        ref board: Board
+        ref board: Board,
+        ref round_effects: RoundEffects,
+        ref global_effects: GlobalEffects
     ) {
         let mut creature = board_utils::get_creature_by_id(ref board, entity_id);
 
@@ -85,7 +87,7 @@ mod battle_actions {
 
         creature.resting_round = battle.round;
 
-        battle_utils::battle_result(world, ref battle, ref creature, ref monster);
+        battle_utils::battle_result(world, ref battle, ref creature, ref monster, ref board, ref round_effects, ref global_effects);
         board_utils::update_creature(ref board, creature.id, ref creature);
     }
 
@@ -95,10 +97,12 @@ mod battle_actions {
         ref battle: Battle,
         ref monster: Monster,
         ref hand: Hand,
+        ref board: Board,
+        ref round_effects: RoundEffects
     ) {
         let mut hand_card = hand_utils::get_hand_card(entity_id, ref hand);
 
-        discard_utils::discard_effect(world, entity_id, hand_card.card_id, ref battle, ref monster);
+        discard_utils::discard_effect(world, hand_card, ref battle, ref monster, ref board, ref hand, ref round_effects);
 
         battle_utils::discard_card(world, ref battle, hand_card.card_id);
 
@@ -108,18 +112,36 @@ mod battle_actions {
 
 mod battle_utils {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-    use thecave::utils::cards::card_utils;
+    use thecave::utils::{
+        cards::card_utils,
+        death::death_utils,
+        adventurer::adventurer_utils
+    };
     use thecave::utils::random;
-    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard};
+    use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard, Board, Hand, RoundEffects, GlobalEffects};
     use thecave::models::card::{Card};
     use thecave::constants::{CardTypes, START_ENERGY, MAX_ENERGY, MAX_HEALTH, MAX_BOARD, DRAW_AMOUNT};
 
-    fn self_damage_adventurer(ref battle: Battle, amount: u16) {
+    fn self_damage_adventurer(
+        world: IWorldDispatcher,
+        ref battle: Battle,
+        amount: u16,
+        ref monster: Monster,
+        ref hand: Hand,
+        ref board: Board,
+        ref round_effects: RoundEffects
+    ) {
+        if amount < 1 {
+            return;
+        }
+
         if battle.adventurer_health < amount {
             battle.adventurer_health = 0;
         } else {
             battle.adventurer_health -= amount;
         }
+
+        adventurer_utils::self_damage_effect(world, amount, ref battle, ref monster, ref board, ref hand, ref round_effects);
     }
 
     fn heal_adventurer(ref battle: Battle, amount: u16) {
@@ -132,6 +154,10 @@ mod battle_utils {
         } else {
             battle.adventurer_health += amount;
         }
+    }
+
+    fn damage_monster(ref monster: Monster, amount: u16) {
+        monster.health -= amount;
     }
 
     fn get_next_energy(round: u16) -> u8 {
@@ -164,11 +190,19 @@ mod battle_utils {
                 health: card.health
             }
         ));
-
+        
         battle.discard_count += 1;
     }
 
-    fn battle_result(world: IWorldDispatcher, ref battle: Battle, ref creature: Creature, ref monster: Monster) {
+    fn battle_result(
+        world: IWorldDispatcher,
+        ref battle: Battle,
+        ref creature: Creature,
+        ref monster: Monster,
+        ref board: Board,
+        ref round_effects: RoundEffects,
+        ref global_effects: GlobalEffects
+    ) {
         if monster.health <= creature.attack {
             monster.health = 0;
         } else {
@@ -180,15 +214,24 @@ mod battle_utils {
                 creature.shield = false;
             }
         } else if creature.health <= monster.attack {
-            creature_dead(ref battle, ref creature);
+            creature_dead(world, ref battle, ref creature, ref board, ref round_effects, ref global_effects);
         } else {
             creature.health -= monster.attack;
         }
     }
 
-    fn creature_dead(ref battle: Battle, ref creature: Creature) {
+    fn creature_dead(
+        world: IWorldDispatcher,
+        ref battle: Battle,
+        ref creature: Creature,
+        ref board: Board,
+        ref round_effects: RoundEffects,
+        ref global_effects: GlobalEffects
+    ) {
+        discard_card(world, ref battle, creature.card_id);
+        death_utils::death_effect(world, ref creature, ref battle, ref board, ref round_effects, ref global_effects);
+
         creature.card_id = 0;
         creature.health = 0;
-        battle.discard_count += 1;
     } 
 }
