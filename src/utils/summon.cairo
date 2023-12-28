@@ -67,11 +67,11 @@ mod summon_utils {
         }
 
         else if id == 44 {
-            battle_utils::self_damage_adventurer(ref battle, 2);
+            battle_utils::self_damage_adventurer(world, ref battle, 2, ref monster, ref hand, ref board, ref round_effects);
         }
 
         else if id == 63 {
-            battle_utils::self_damage_adventurer(ref battle, 5);
+            battle_utils::self_damage_adventurer(world, ref battle, 5, ref monster, ref hand, ref board, ref round_effects);
         }
 
         else if id == 64 {
@@ -97,7 +97,8 @@ mod summon_utils {
         }
 
         else if id == 75 {
-            battle_utils::heal_adventurer(ref battle, 2);
+            battle_utils::heal_adventurer(world, ref battle, 2, ref monster, ref hand, ref board, ref round_effects);
+            
         }
 
         else if id == 98 {

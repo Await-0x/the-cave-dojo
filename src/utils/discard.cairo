@@ -31,7 +31,7 @@ mod discard_utils {
         round_effects.spell_reduction += board_utils::count_card_id(ref board, 7);
         board_utils::increase_creature_stats(ref board, 8, 0, 2);
         battle_utils::increase_energy(ref battle, board_utils::count_card_id(ref board, 9));
-        battle_utils::heal_adventurer(ref battle, board_utils::count_card_id(ref board, 10).into());
+        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 10).into(), ref monster, ref hand, ref board, ref round_effects);
 
         let creature_id_11 = board_utils::get_creature_by_card_id(ref board, 11);
         if creature_id_11.card_id != 0 {
@@ -41,7 +41,7 @@ mod discard_utils {
 
         board_utils::apply_shield(ref board, 12);
         board_utils::apply_charge(ref board, 13);
-        battle_utils::self_damage_adventurer(ref battle, board_utils::count_card_id(ref board, 46).into());
-        battle_utils::heal_adventurer(ref battle, board_utils::count_card_id(ref board, 79).into());
+        battle_utils::self_damage_adventurer(world, ref battle, board_utils::count_card_id(ref board, 46).into(), ref monster, ref hand, ref board, ref round_effects);
+        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 79).into(), ref monster, ref hand, ref board, ref round_effects);
     }
 }

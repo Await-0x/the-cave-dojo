@@ -30,11 +30,13 @@ mod battle_actions {
 
         let mut hand_card = hand_utils::get_hand_card(entity_id, ref hand);
 
-        if hand_card.cost > battle.adventurer_energy || hand_card.card_type != CardTypes::CREATURE {
+        let card_cost = hand_utils::get_creature_cost(ref hand_card, ref round_effects);
+
+        if card_cost > battle.adventurer_energy || hand_card.card_type != CardTypes::CREATURE {
             return;
         }
 
-        battle.adventurer_energy -= hand_card.cost;
+        battle.adventurer_energy -= card_cost;
 
         let mut creature = Creature {
             id: board_slot,
@@ -61,7 +63,7 @@ mod battle_actions {
     ) {
         let card = get!(world, (entity_id, battle.id), HandCard);
         let mut creature = get!(world, (target_id, battle.id), Creature);
-
+        
         if card.cost > battle.adventurer_energy || card.card_type != CardTypes::SPELL {
             return;
         }
@@ -144,16 +146,29 @@ mod battle_utils {
         adventurer_utils::self_damage_effect(world, amount, ref battle, ref monster, ref board, ref hand, ref round_effects);
     }
 
-    fn heal_adventurer(ref battle: Battle, amount: u16) {
-        if battle.adventurer_health == MAX_HEALTH {
+    fn heal_adventurer(
+        world: IWorldDispatcher,
+        ref battle: Battle,
+        amount: u16,
+        ref monster: Monster,
+        ref hand: Hand,
+        ref board: Board,
+        ref round_effects: RoundEffects
+    ) {
+        if amount < 1 || battle.adventurer_health == MAX_HEALTH {
             return;
         }
 
+        let mut amount = amount;
+
         if battle.adventurer_health + amount > MAX_HEALTH {
+            amount = battle.adventurer_health + amount  - MAX_HEALTH;
             battle.adventurer_health = MAX_HEALTH;
         } else {
             battle.adventurer_health += amount;
         }
+
+        adventurer_utils::heal_effect(world, amount, ref battle, ref monster, ref board, ref hand, ref round_effects);
     }
 
     fn damage_monster(ref monster: Monster, amount: u16) {

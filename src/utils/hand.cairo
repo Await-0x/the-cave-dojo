@@ -4,7 +4,7 @@ mod hand_utils {
     use array::ArrayTrait;
     use thecave::models::card::{Card};
     use thecave::utils::battle::battle_utils;
-    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand};
+    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand, RoundEffects};
     use thecave::constants::{CardTypes, DECK_SIZE};
 
     fn load_hand(world: IWorldDispatcher, battle_id: usize) -> Hand {
@@ -35,7 +35,7 @@ mod hand_utils {
             set!(world, (hand.hand5));
         }
         if hand.hand6.card_id != 0 {
-            set!(world, hand.hand6));
+            set!(world, (hand.hand6));
         }
     }
 
@@ -179,5 +179,55 @@ mod hand_utils {
         if hand.hand6.card_id == card_id {
             hand.hand6.cost -= cost;
         }
+    }
+
+    fn get_creature_cost(ref hand_card: HandCard, ref round_effects: RoundEffects) -> u8 {
+        let mut cost = hand_card.cost;
+
+        if round_effects.adventurer_damaged == true {
+            if round_effects.creature_reduction_if_damaged >= cost {
+                return 0;
+            }
+
+            cost -= round_effects.creature_reduction_if_damaged;
+        }
+        
+        if round_effects.adventurer_healed == true {
+            if round_effects.creature_reduction_if_healed >= cost {
+                return 0;
+            }
+
+            cost -= round_effects.creature_reduction_if_healed;
+        }
+
+        return cost;
+    }
+
+    fn get_spell_cost(ref hand_card: HandCard, ref round_effects: RoundEffects) -> u8 {
+        let mut cost = hand_card.cost;
+
+        if round_effects.spell_reduction >= cost {
+            return 0;
+        }
+
+        cost -= round_effects.spell_reduction;
+
+        if round_effects.adventurer_damaged == true {
+            if round_effects.spell_reduction_if_damaged >= cost {
+                return 0;
+            }
+
+            cost -= round_effects.spell_reduction_if_damaged;
+        }
+        
+        if round_effects.adventurer_healed == true {
+            if round_effects.spell_reduction_if_healed >= cost {
+                return 0;
+            }
+
+            cost -= round_effects.spell_reduction_if_healed;
+        }
+
+        return cost;
     }
 }

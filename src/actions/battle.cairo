@@ -47,6 +47,7 @@ mod battle_actions {
                 adventurer_healed: false,
                 creature_reduction_if_healed: 0,
                 creature_reduction_if_damaged: 0,
+                spell_reduction_if_healed: 0,
                 spell_reduction_if_damaged: 0,
                 creatures_discarded: 0,
                 spell_reduction: 0
