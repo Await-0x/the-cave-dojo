@@ -45,7 +45,7 @@ mod summon_utils {
         }
 
         else if id == 32 {
-            let scavenger_count = board_utils::count_type(ref board, CardTags::SCAVENGER);
+            let scavenger_count: u16 = board_utils::count_type(ref board, CardTags::SCAVENGER).into();
             creature.attack += scavenger_count;
             creature.health += scavenger_count;
         }
@@ -75,7 +75,7 @@ mod summon_utils {
         }
 
         else if id == 64 {
-            let demon_count = board_utils::count_type(ref board, CardTags::DEMON);
+            let demon_count: u16 = board_utils::count_type(ref board, CardTags::DEMON).into();
             creature.attack += demon_count;
             creature.health += demon_count;
         }
@@ -102,7 +102,7 @@ mod summon_utils {
         }
 
         else if id == 98 {
-            let priest_count = board_utils::count_type(ref board, CardTags::PRIEST);
+            let priest_count: u16 = board_utils::count_type(ref board, CardTags::PRIEST).into();
             creature.attack += priest_count;
             creature.health += priest_count;
         }

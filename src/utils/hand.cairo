@@ -3,9 +3,12 @@ mod hand_utils {
 
     use array::ArrayTrait;
     use thecave::models::card::{Card};
-    use thecave::utils::battle::battle_utils;
-    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand, RoundEffects};
-    use thecave::constants::{CardTypes, DECK_SIZE};
+    use thecave::utils::{
+        battle::battle_utils,
+        board::board_utils
+    };
+    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand, Board, RoundEffects};
+    use thecave::constants::{CardTypes, CardTags, DECK_SIZE};
 
     fn load_hand(world: IWorldDispatcher, battle_id: usize) -> Hand {
         Hand {
@@ -181,8 +184,26 @@ mod hand_utils {
         }
     }
 
-    fn get_creature_cost(ref hand_card: HandCard, ref round_effects: RoundEffects) -> u8 {
+    fn get_creature_cost(ref hand_card: HandCard, ref board: Board, ref round_effects: RoundEffects) -> u8 {
         let mut cost = hand_card.cost;
+
+        if hand_card.card_id == 34 {
+            let scavengers = board_utils::count_type(ref board, CardTags::SCAVENGER);
+            if scavengers >= cost {
+                return 0;
+            }
+
+            cost -= scavengers;
+        }
+
+        if hand_card.card_id == 66 {
+            let demons = board_utils::count_type(ref board, CardTags::DEMON);
+            if demons >= cost {
+                return 0;
+            }
+
+            cost -= demons;
+        }
 
         if round_effects.adventurer_damaged == true {
             if round_effects.creature_reduction_if_damaged >= cost {

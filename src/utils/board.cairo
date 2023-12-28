@@ -172,7 +172,7 @@ mod board_utils {
         }
     }
 
-    fn count_type(ref board: Board, _type: felt252) -> u16 {
+    fn count_type(ref board: Board, _type: felt252) -> u8 {
         let mut count = 0;
 
         if board.creature1.card_tag == _type {

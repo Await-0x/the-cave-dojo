@@ -76,7 +76,7 @@ mod battle_actions {
                     summon_creature(world, entity_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'cast_spell' {
-                    cast_spell(world, entity_id, target_id, ref battle, ref monster);
+                    cast_spell(world, entity_id, target_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'attack_monster' {
                     attack_monster(world, entity_id, ref battle, ref monster, ref board, ref round_effects, ref global_effects);

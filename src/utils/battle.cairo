@@ -30,7 +30,7 @@ mod battle_actions {
 
         let mut hand_card = hand_utils::get_hand_card(entity_id, ref hand);
 
-        let card_cost = hand_utils::get_creature_cost(ref hand_card, ref round_effects);
+        let card_cost = hand_utils::get_creature_cost(ref hand_card, ref board, ref round_effects);
 
         if card_cost > battle.adventurer_energy || hand_card.card_type != CardTypes::CREATURE {
             return;
@@ -60,16 +60,22 @@ mod battle_actions {
         target_id: u16,
         ref battle: Battle,
         ref monster: Monster,
+        ref board: Board,
+        ref hand: Hand,
+        ref round_effects: RoundEffects,
+        ref global_effects: GlobalEffects
     ) {
-        let card = get!(world, (entity_id, battle.id), HandCard);
-        let mut creature = get!(world, (target_id, battle.id), Creature);
-        
-        if card.cost > battle.adventurer_energy || card.card_type != CardTypes::SPELL {
+        let mut hand_card = hand_utils::get_hand_card(entity_id, ref hand);
+
+        let card_cost = hand_utils::get_spell_cost(ref hand_card, ref round_effects);
+
+        if card_cost > battle.adventurer_energy || hand_card.card_type != CardTypes::SPELL {
             return;
         }
 
-        battle.adventurer_energy -= card.cost;
-        spell_utils::spell_effect(world, entity_id, card.card_id, ref battle, ref monster, ref creature);
+        battle.adventurer_energy -= card_cost;
+        hand_utils::remove_hand_card(entity_id, ref hand);
+        spell_utils::spell_effect(world, hand_card, target_id, ref battle, ref monster, ref hand, ref board, ref round_effects, ref global_effects);
     }
 
     fn attack_monster(
