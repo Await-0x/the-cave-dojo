@@ -8,7 +8,7 @@ mod card_utils {
             return Card {
                 id: 1,
                 name: 'Fireball',
-                card_type: CardTypes::CREATURE,
+                card_type: CardTypes::SPELL,
                 card_tag: CardTags::SPELL,
                 cost: 5,
                 attack: 0,

@@ -7,7 +7,7 @@ mod hand_utils {
         battle::battle_utils,
         board::board_utils
     };
-    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand, Board, RoundEffects};
+    use thecave::models::battle::{Battle, HandCard, Monster, DeckCard, Hand, Board, RoundEffects, GlobalEffects};
     use thecave::constants::{CardTypes, CardTags, DECK_SIZE};
 
     fn load_hand(world: IWorldDispatcher, battle_id: usize) -> Hand {
@@ -109,12 +109,9 @@ mod hand_utils {
         }
     }
 
-    fn get_next_card(world: IWorldDispatcher, ref battle: Battle, hand_slot: u8) -> HandCard {
+    fn get_next_card(world: IWorldDispatcher, ref battle: Battle, hand_slot: u8, ref global_effects: GlobalEffects) -> HandCard {
         if battle.deck_size == 0 {
-            battle.deck_index = 0;
-            battle.deck_number += 1;
-            battle.deck_size = battle.discard_count;
-            battle.discard_count = 0;
+            battle_utils::switch_deck(world, ref battle, ref global_effects);
         }
 
         let card: DeckCard = get!(world, (battle.id, battle.deck_number, battle.deck_index), DeckCard);
@@ -132,29 +129,29 @@ mod hand_utils {
         }
     }
 
-    fn draw_cards(world: IWorldDispatcher, ref hand: Hand, ref battle: Battle) {
+    fn draw_cards(world: IWorldDispatcher, ref hand: Hand, ref battle: Battle, ref global_effects: GlobalEffects) {
         if hand.hand1.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 1)));
+            set!(world, (get_next_card(world, ref battle, 1, ref global_effects)));
         }
         
         if hand.hand2.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 2)));
+            set!(world, (get_next_card(world, ref battle, 2, ref global_effects)));
         }
 
         if hand.hand3.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 3)));
+            set!(world, (get_next_card(world, ref battle, 3, ref global_effects)));
         }
 
         if hand.hand4.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 4)));
+            set!(world, (get_next_card(world, ref battle, 4, ref global_effects)));
         }
 
         if hand.hand5.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 5)));
+            set!(world, (get_next_card(world, ref battle, 5, ref global_effects)));
         }
 
         if hand.hand6.card_id == 0 {
-            set!(world, (get_next_card(world, ref battle, 6)));
+            set!(world, (get_next_card(world, ref battle, 6, ref global_effects)));
         }
     }
 
@@ -186,6 +183,12 @@ mod hand_utils {
 
     fn get_creature_cost(ref hand_card: HandCard, ref board: Board, ref round_effects: RoundEffects) -> u8 {
         let mut cost = hand_card.cost;
+
+        let creature_3 = board_utils::count_card_id(ref board, 3);
+        if creature_3 >= cost {
+            return 0;
+        }
+        cost -= creature_3;
 
         if hand_card.card_id == 34 {
             let scavengers = board_utils::count_type(ref board, CardTags::SCAVENGER);

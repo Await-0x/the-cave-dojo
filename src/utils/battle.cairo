@@ -110,6 +110,12 @@ mod battle_actions {
     ) {
         let mut hand_card = hand_utils::get_hand_card(entity_id, ref hand);
 
+        if battle.adventurer_energy < 1 || hand_card.card_id == 0 {
+            return;
+        }
+
+        battle.adventurer_energy -= 1;
+
         discard_utils::discard_effect(world, hand_card, ref battle, ref monster, ref board, ref hand, ref round_effects);
 
         battle_utils::discard_card(world, ref battle, hand_card.card_id);
@@ -254,5 +260,14 @@ mod battle_utils {
 
         creature.card_id = 0;
         creature.health = 0;
-    } 
+    }
+
+    fn switch_deck(world: IWorldDispatcher, ref battle: Battle, ref global_effects: GlobalEffects) {
+        battle.deck_index = 0;
+        battle.deck_number += 1;
+        battle.deck_size = battle.discard_count;
+        battle.discard_count = 0;
+
+        global_effects.scavengers_discarded = 0;
+    }
 }

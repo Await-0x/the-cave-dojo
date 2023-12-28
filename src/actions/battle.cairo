@@ -15,10 +15,7 @@ mod battle_actions {
         game::Game,
         battle::{Battle, Monster, RoundEffects, GlobalEffects},
     };
-    use thecave::utils::battle::{
-        battle_actions::{summon_creature, cast_spell, attack_monster, discard},
-        battle_utils::{get_next_energy},
-    };
+    use thecave::utils::battle::{battle_actions, battle_utils};
     use thecave::utils::{
         monsters::monster_utils,
         board::board_utils,
@@ -73,16 +70,16 @@ mod battle_actions {
                 let target_id: u16 = (*action.at(2)).try_into().unwrap();
 
                 if action_type == 'summon_creature' {
-                    summon_creature(world, entity_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
+                    battle_actions::summon_creature(world, entity_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'cast_spell' {
-                    cast_spell(world, entity_id, target_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
+                    battle_actions::cast_spell(world, entity_id, target_id, ref battle, ref monster, ref board, ref hand, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'attack_monster' {
-                    attack_monster(world, entity_id, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
+                    battle_actions::attack_monster(world, entity_id, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
                 }
                 else if action_type == 'discard' {
-                    discard(world, entity_id, ref battle, ref monster, ref hand, ref board, ref round_effects);
+                    battle_actions::discard(world, entity_id, ref battle, ref monster, ref hand, ref board, ref round_effects);
                 }
                 else {
                     panic(array!['Unknown move']);
@@ -112,11 +109,11 @@ mod battle_actions {
 
             board_utils::set_board(world, ref board);
 
-            battle.adventurer_energy = get_next_energy(battle.round);
+            battle.adventurer_energy = battle_utils::get_next_energy(battle.round);
             battle.round += 1;
 
             hand_utils::set_hand(world, ref hand);
-            hand_utils::draw_cards(world, ref hand, ref battle);
+            hand_utils::draw_cards(world, ref hand, ref battle, ref global_effects);
 
             set!(world, (battle, monster));
         }

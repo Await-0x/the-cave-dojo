@@ -39,13 +39,13 @@ mod death_utils {
 
         else if id == 69 {
             if round_effects.adventurer_healed == true {
-                round_effects.creature_reduction_if_damaged -= 1;
+                round_effects.creature_reduction_if_healed -= 1;
             }
         }
 
         else if id == 73 {
             if round_effects.adventurer_healed == true {
-                round_effects.spell_reduction_if_damaged -= 1;
+                round_effects.spell_reduction_if_healed -= 1;
             }
         }
     }
