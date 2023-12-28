@@ -185,10 +185,10 @@ mod hand_utils {
         let mut cost = hand_card.cost;
 
         let creature_3 = board_utils::count_card_id(ref board, 3);
-        if creature_3 >= cost {
+        if creature_3 * round_effects.creatures_discarded >= cost {
             return 0;
         }
-        cost -= creature_3;
+        cost -= creature_3 * round_effects.creatures_discarded;
 
         if hand_card.card_id == 34 {
             let scavengers = board_utils::count_type(ref board, CardTags::SCAVENGER);
