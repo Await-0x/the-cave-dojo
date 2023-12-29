@@ -118,7 +118,7 @@ mod battle_actions {
             hand_utils::set_hand(world, ref hand);
             hand_utils::draw_cards(world, ref hand, ref battle, ref global_effects);
 
-            set!(world, (battle, monster));
+            set!(world, (battle, monster, global_effects));
         }
     }
 }

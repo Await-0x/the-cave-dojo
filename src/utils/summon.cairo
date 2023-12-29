@@ -23,6 +23,8 @@ mod summon_utils {
     ) {
         let id = creature.card_id;
     
+        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 80), ref monster, ref hand, ref board, ref round_effects);
+
         // Taunt
         if id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 49 || id == 50 || id == 51 || id == 82 || id == 83 || id == 84 || id == 85 {
             monster.taunted = true;
@@ -80,15 +82,19 @@ mod summon_utils {
             creature.health += demon_count;
         }
 
+        else if id == 65 {
+            board_utils::increase_type_stats(ref board, CardTags::DEMON, 2, 0);
+        }
+
         else if id == 69 {
             if round_effects.adventurer_healed == true {
-                round_effects.creature_reduction_if_damaged += 1;
+                round_effects.creature_reduction_if_healed += 1;
             }
         }
 
         else if id == 73 {
             if round_effects.adventurer_healed == true {
-                round_effects.spell_reduction_if_damaged += 1;
+                round_effects.spell_reduction_if_healed += 1;
             }
         }
 
@@ -98,7 +104,7 @@ mod summon_utils {
 
         else if id == 75 {
             battle_utils::heal_adventurer(world, ref battle, 2, ref monster, ref hand, ref board, ref round_effects);
-            
+          
         }
 
         else if id == 98 {
