@@ -19,7 +19,8 @@ mod battle_actions {
     use thecave::utils::{
         monsters::monster_utils,
         board::board_utils,
-        hand::hand_utils
+        hand::hand_utils,
+        round::round_utils
     };
     use thecave::constants::{Messages, START_ENERGY, DRAW_AMOUNT};
 
@@ -95,6 +96,8 @@ mod battle_actions {
                 set!(world, (game, monster));
                 return;
             }
+
+            round_utils::end_of_round_effect(world, ref battle, ref monster, ref hand, ref board, ref round_effects);
 
             monster.attack += 1;
             monster_utils::monster_attack(world, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
