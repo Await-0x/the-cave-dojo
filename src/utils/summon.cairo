@@ -23,7 +23,7 @@ mod summon_utils {
     ) {
         let id = creature.card_id;
     
-        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 80), ref monster, ref hand, ref board, ref round_effects);
+        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 80).into(), ref monster, ref hand, ref board, ref round_effects);
 
         // Taunt
         if id == 14 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 49 || id == 50 || id == 51 || id == 82 || id == 83 || id == 84 || id == 85 {
