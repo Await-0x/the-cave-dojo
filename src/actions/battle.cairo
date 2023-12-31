@@ -99,7 +99,6 @@ mod battle_actions {
 
             round_utils::end_of_round_effect(world, ref battle, ref monster, ref hand, ref board, ref round_effects);
 
-            monster.attack += 1;
             monster_utils::monster_attack(world, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
 
             if battle.adventurer_health < 1 {
@@ -114,6 +113,7 @@ mod battle_actions {
 
             battle.adventurer_energy = battle_utils::get_next_energy(battle.round);
             battle.round += 1;
+            monster.attack += 1;
 
             hand_utils::set_hand(world, ref hand);
             hand_utils::draw_cards(world, ref hand, ref battle, ref global_effects);

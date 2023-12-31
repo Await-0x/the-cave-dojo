@@ -19,6 +19,7 @@ mod CardTags {
     const DEMON: felt252 = 'Demon';
     const PRIEST: felt252 = 'Priest';
     const SPELL: felt252 = 'Spell';
+    const NONE: felt252 = '\u0000';
 }
 
 mod ActionTypes {

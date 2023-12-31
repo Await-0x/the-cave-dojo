@@ -22,7 +22,7 @@ mod summon_utils {
         ref global_effects: GlobalEffects
     ) {
         let id = creature.card_id;
-    
+  
         battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 80).into(), ref monster, ref hand, ref board, ref round_effects);
 
         // Taunt
@@ -33,12 +33,17 @@ mod summon_utils {
 
         // Charge
         if id == 20 || id == 21 || id == 22 || id == 52 || id == 53 || id == 54 || id == 86 || id == 87 || id == 88 || id == 201 || id == 202 {
+            println!("CHARGE!");
             creature.resting_round = 0;
         }
 
         // Shield
         if id == 23 || id == 24 || id == 25 || id == 55 || id == 56 || id == 57 || id == 89 || id == 90 || id == 91 {
             creature.shield = true;
+        }
+
+        if creature.card_tag == CardTags::SCAVENGER {
+            creature.attack += board_utils::count_card_id(ref board, 33).into() * 2;
         }
 
         if id == 31 {
@@ -104,7 +109,10 @@ mod summon_utils {
 
         else if id == 75 {
             battle_utils::heal_adventurer(world, ref battle, 2, ref monster, ref hand, ref board, ref round_effects);
-          
+        }
+
+        else if id == 77 {
+            battle_utils::heal_adventurer(world, ref battle, 2, ref monster, ref hand, ref board, ref round_effects);
         }
 
         else if id == 98 {

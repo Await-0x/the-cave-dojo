@@ -34,7 +34,7 @@ mod spell_utils {
                     creature.health -= 5;
                 }
 
-                board_utils::update_creature(ref board, creature.id, ref creature);
+                board_utils::update_creature(ref board, ref creature);
             }
         }
 

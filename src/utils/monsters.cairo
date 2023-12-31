@@ -14,8 +14,8 @@ mod monster_utils {
         return Monster {
             battle_id,
             monster_id,
-            attack: 0,
-            health: 160,
+            attack: 1,
+            health: 80,
             enrage_turn: 10,
             taunted: false,
             taunted_by: 0,

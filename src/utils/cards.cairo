@@ -10,7 +10,7 @@ mod card_utils {
                 name: 'Fireball',
                 card_type: CardTypes::SPELL,
                 card_tag: CardTags::SPELL,
-                cost: 5,
+                cost: 3,
                 attack: 0,
                 health: 0,
             };
@@ -34,7 +34,7 @@ mod card_utils {
                 name: 'Hyena',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 1,
             };
@@ -46,7 +46,7 @@ mod card_utils {
                 name: 'Wild Dog',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 1,
                 health: 3,
             };
@@ -58,7 +58,7 @@ mod card_utils {
                 name: 'Jackal',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 12,
+                cost: 9,
                 attack: 8,
                 health: 8,
             };
@@ -82,7 +82,7 @@ mod card_utils {
                 name: 'Buzzard',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 6,
+                cost: 5,
                 attack: 4,
                 health: 3,
             };
@@ -94,7 +94,7 @@ mod card_utils {
                 name: 'Raven',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 5,
+                cost: 4,
                 attack: 4,
                 health: 3,
             };
@@ -106,7 +106,7 @@ mod card_utils {
                 name: 'Wolverine',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 2,
             };
@@ -130,7 +130,7 @@ mod card_utils {
                 name: 'Kite',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 4,
+                cost: 3,
                 attack: 2,
                 health: 6,
             };
@@ -154,7 +154,7 @@ mod card_utils {
                 name: 'Crab',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -190,7 +190,7 @@ mod card_utils {
                 name: 'Condor',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 4,
             };
@@ -202,7 +202,7 @@ mod card_utils {
                 name: 'Fox',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -214,7 +214,7 @@ mod card_utils {
                 name: 'Opossum',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -226,7 +226,7 @@ mod card_utils {
                 name: 'Marabou',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -250,7 +250,7 @@ mod card_utils {
                 name: 'Tasmanian Devil',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 4,
             };
@@ -262,7 +262,7 @@ mod card_utils {
                 name: 'Bald Eagle',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 7,
             };
@@ -274,7 +274,7 @@ mod card_utils {
                 name: 'King Vulture',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 2,
             };
@@ -286,7 +286,7 @@ mod card_utils {
                 name: 'Griffon',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -298,7 +298,7 @@ mod card_utils {
                 name: 'Binturong',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 2,
             };
@@ -322,7 +322,7 @@ mod card_utils {
                 name: 'Chipmunk',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 4,
             };
@@ -334,7 +334,7 @@ mod card_utils {
                 name: 'Sarcophagus',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -346,7 +346,7 @@ mod card_utils {
                 name: 'Skunk',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -358,7 +358,7 @@ mod card_utils {
                 name: 'Caterpillar',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -370,7 +370,7 @@ mod card_utils {
                 name: 'Grub Worm',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 3,
+                cost: 2,
                 attack: 1,
                 health: 1,
             };
@@ -382,7 +382,7 @@ mod card_utils {
                 name: 'Raccoon',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 3,
             };
@@ -406,7 +406,7 @@ mod card_utils {
                 name: 'Weasel',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::SCAVENGER,
-                cost: 8,
+                cost: 7,
                 attack: 8,
                 health: 8,
             };
@@ -430,7 +430,7 @@ mod card_utils {
                 name: 'Blight Herald',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 1,
             };
@@ -442,7 +442,7 @@ mod card_utils {
                 name: 'Chaos Bringer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 3,
+                cost: 2,
                 attack: 1,
                 health: 3,
             };
@@ -454,7 +454,7 @@ mod card_utils {
                 name: 'Dread Wraith',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 12,
+                cost: 9,
                 attack: 8,
                 health: 8,
             };
@@ -478,7 +478,7 @@ mod card_utils {
                 name: 'Havoc Whisperer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 6,
+                cost: 5,
                 attack: 4,
                 health: 3,
             };
@@ -490,7 +490,7 @@ mod card_utils {
                 name: 'Bane Summoner',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 5,
+                cost: 4,
                 attack: 4,
                 health: 3,
             };
@@ -502,7 +502,7 @@ mod card_utils {
                 name: 'Fiery Demon',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 2,
             };
@@ -538,7 +538,7 @@ mod card_utils {
                 name: 'Jinx Weaver',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 4,
             };
@@ -550,7 +550,7 @@ mod card_utils {
                 name: 'Reaver',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 2,
                 health: 6,
             };
@@ -574,7 +574,7 @@ mod card_utils {
                 name: 'Pestilence Monger',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -586,7 +586,7 @@ mod card_utils {
                 name: 'Ravage Beast',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -598,7 +598,7 @@ mod card_utils {
                 name: 'Zephyr',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -610,7 +610,7 @@ mod card_utils {
                 name: 'Grim Marauder',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -634,7 +634,7 @@ mod card_utils {
                 name: 'Scream Shrieker',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 4,
             };
@@ -646,7 +646,7 @@ mod card_utils {
                 name: 'Vex',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 7,
             };
@@ -658,7 +658,7 @@ mod card_utils {
                 name: 'Phantom',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 2,
             };
@@ -670,7 +670,7 @@ mod card_utils {
                 name: 'Seraphex',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -682,7 +682,7 @@ mod card_utils {
                 name: 'Devourer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 2,
             };
@@ -706,7 +706,7 @@ mod card_utils {
                 name: 'Eerie Sentinel',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 4,
             };
@@ -718,7 +718,7 @@ mod card_utils {
                 name: 'Nightmare Weaver',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -730,7 +730,7 @@ mod card_utils {
                 name: 'Cinder Ghast',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -742,7 +742,7 @@ mod card_utils {
                 name: 'Gloom Stalker',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -754,7 +754,7 @@ mod card_utils {
                 name: 'Rage Infernal',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 6,
                 health: 7,
             };
@@ -766,7 +766,7 @@ mod card_utils {
                 name: 'Void Reckoner',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 3,
             };
@@ -790,7 +790,7 @@ mod card_utils {
                 name: 'Flame Warden',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::DEMON,
-                cost: 8,
+                cost: 7,
                 attack: 8,
                 health: 8,
             };
@@ -802,7 +802,7 @@ mod card_utils {
                 name: 'Lava Wave',
                 card_type: CardTypes::SPELL,
                 card_tag: CardTags::SPELL,
-                cost: 5,
+                cost: 3,
                 attack: 0,
                 health: 0,
             };
@@ -814,7 +814,7 @@ mod card_utils {
                 name: 'Light Herald',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -826,7 +826,7 @@ mod card_utils {
                 name: 'Harmony Seer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 1,
             };
@@ -838,7 +838,7 @@ mod card_utils {
                 name: 'Wisdom Bringer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 1,
                 health: 3,
             };
@@ -850,7 +850,7 @@ mod card_utils {
                 name: 'Grace Warden',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 2,
             };
@@ -874,7 +874,7 @@ mod card_utils {
                 name: 'Hope Weaver',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 6,
+                cost: 5,
                 attack: 4,
                 health: 3,
             };
@@ -886,7 +886,7 @@ mod card_utils {
                 name: 'Soul Shepherd',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 4,
                 health: 3,
             };
@@ -898,7 +898,7 @@ mod card_utils {
                 name: 'Blessing Caster',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 2,
             };
@@ -934,7 +934,7 @@ mod card_utils {
                 name: 'Chant Monk',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 4,
             };
@@ -946,7 +946,7 @@ mod card_utils {
                 name: 'Mystic Vicar',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 4,
+                cost: 3,
                 attack: 2,
                 health: 6,
             };
@@ -970,7 +970,7 @@ mod card_utils {
                 name: 'Ritual Preacher',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -994,7 +994,7 @@ mod card_utils {
                 name: 'Sanctity Envoy',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -1006,7 +1006,7 @@ mod card_utils {
                 name: 'Purity Vicar',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -1018,7 +1018,7 @@ mod card_utils {
                 name: 'Hallow Emissary',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -1042,7 +1042,7 @@ mod card_utils {
                 name: 'Truth Seeker',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 2,
                 health: 4,
             };
@@ -1054,7 +1054,7 @@ mod card_utils {
                 name: 'Mercy Giver',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 7,
             };
@@ -1066,7 +1066,7 @@ mod card_utils {
                 name: 'Serenade Cleric',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 2,
             };
@@ -1078,7 +1078,7 @@ mod card_utils {
                 name: 'Ethereal Clergy',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 2,
             };
@@ -1090,7 +1090,7 @@ mod card_utils {
                 name: 'Celestial Minister',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 7,
+                cost: 5,
                 attack: 7,
                 health: 2,
             };
@@ -1114,7 +1114,7 @@ mod card_utils {
                 name: 'Virtue Curate',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 3,
                 health: 4,
             };
@@ -1126,7 +1126,7 @@ mod card_utils {
                 name: 'Eden Priest',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 4,
+                cost: 3,
                 attack: 4,
                 health: 5,
             };
@@ -1138,7 +1138,7 @@ mod card_utils {
                 name: 'Aurora Priestess',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 5,
+                cost: 4,
                 attack: 5,
                 health: 6,
             };
@@ -1150,7 +1150,7 @@ mod card_utils {
                 name: 'Divinity Channeler',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 6,
+                cost: 5,
                 attack: 6,
                 health: 7,
             };
@@ -1162,7 +1162,7 @@ mod card_utils {
                 name: 'Gospel Scribe',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 3,
+                cost: 2,
                 attack: 1,
                 health: 1,
             };
@@ -1174,7 +1174,7 @@ mod card_utils {
                 name: 'Solace Bringer',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 4,
+                cost: 3,
                 attack: 3,
                 health: 3,
             };
@@ -1198,7 +1198,7 @@ mod card_utils {
                 name: 'Sanctum Prophet',
                 card_type: CardTypes::CREATURE,
                 card_tag: CardTags::PRIEST,
-                cost: 8,
+                cost: 7,
                 attack: 8,
                 health: 8,
             };

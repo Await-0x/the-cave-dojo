@@ -115,7 +115,9 @@ mod hand_utils {
         }
 
         let card: DeckCard = get!(world, (battle.id, battle.deck_number, battle.deck_index), DeckCard);
+
         battle.deck_size -= 1;
+        battle.deck_index += 1;
 
         HandCard {
             id: hand_slot,
@@ -206,6 +208,15 @@ mod hand_utils {
             }
 
             cost -= demons;
+        }
+
+        if hand_card.card_id == 100 {
+            let priests = board_utils::count_type(ref board, CardTags::PRIEST);
+            if priests >= cost {
+                return 0;
+            }
+
+            cost -= priests;
         }
 
         if round_effects.adventurer_damaged == true {

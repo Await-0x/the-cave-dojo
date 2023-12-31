@@ -5,7 +5,7 @@ mod board_utils {
     use thecave::models::card::{Card};
     use thecave::utils::battle::battle_utils;
     use thecave::models::battle::{Battle, HandCard, Creature, Monster, DeckCard, Board};
-    use thecave::constants::{CardTypes};
+    use thecave::constants::{CardTypes, CardTags};
 
     fn load_board(world: IWorldDispatcher, battle_id: usize) -> Board {
         Board {
@@ -19,22 +19,22 @@ mod board_utils {
     }
 
     fn set_board(world: IWorldDispatcher, ref board: Board) {
-        if board.creature1.card_id != 0 {
+        if board.creature1.card_tag != CardTags::NONE {
             set!(world, (board.creature1));
         }
-        if board.creature2.card_id != 0 {
+        if board.creature2.card_tag != CardTags::NONE {
             set!(world, (board.creature2));
         }
-        if board.creature3.card_id != 0 {
+        if board.creature3.card_tag != CardTags::NONE {
             set!(world, (board.creature3));
         }
-        if board.creature4.card_id != 0 {
+        if board.creature4.card_tag != CardTags::NONE {
             set!(world, (board.creature4));
         }
-        if board.creature5.card_id != 0 {
+        if board.creature5.card_tag != CardTags::NONE {
             set!(world, (board.creature5));
         }
-        if board.creature6.card_id != 0 {
+        if board.creature6.card_tag != CardTags::NONE {
             set!(world, (board.creature6));
         }
     }
@@ -146,28 +146,29 @@ mod board_utils {
         return 0;
     }
 
-    fn update_creature(ref board: Board, slot: u8, ref creature: Creature) {
-        if slot == 1 {
+    fn update_creature(ref board: Board, ref creature: Creature) {
+        println!("UPDATING CREATURE {} {}", creature.id, creature.card_id);
+        if creature.id == 1 {
             board.creature1 = creature;
         }
 
-        else if slot == 2 {
+        else if creature.id == 2 {
             board.creature2 = creature;
         }
 
-        else if slot == 3 {
+        else if creature.id == 3 {
             board.creature3 = creature;
         }
 
-        else if slot == 4 {
+        else if creature.id == 4 {
             board.creature4 = creature;
         }
 
-        else if slot == 5 {
+        else if creature.id == 5 {
             board.creature5 = creature;
         }
 
-        else if slot == 6 {
+        else if creature.id == 6 {
             board.creature6 = creature;
         }
     }
