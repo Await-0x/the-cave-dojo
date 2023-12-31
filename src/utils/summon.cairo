@@ -116,7 +116,6 @@ mod summon_utils {
 
         else if id == 98 {
             let priest_count: u16 = board_utils::count_type(ref board, CardTags::PRIEST).into();
-            println!("PRIESTS {}", priest_count);
             creature.attack += priest_count;
             creature.health += priest_count;
         }

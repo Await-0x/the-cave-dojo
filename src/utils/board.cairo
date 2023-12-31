@@ -147,7 +147,6 @@ mod board_utils {
     }
 
     fn update_creature(ref board: Board, ref creature: Creature) {
-        println!("UPDATING CREATURE {} {}", creature.id, creature.card_id);
         if creature.id == 1 {
             board.creature1 = creature;
         }

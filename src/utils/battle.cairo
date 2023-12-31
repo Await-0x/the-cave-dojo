@@ -23,11 +23,8 @@ mod battle_actions {
         ref round_effects: RoundEffects,
         ref global_effects: GlobalEffects
     ) {
-        println!("SUMMONING CREATURE {}", entity_id);
-   
         let board_slot = board_utils::get_available_slot(ref board);
         if board_slot == 0 {
-            println!("NO BOARD SLOTS");
             return;
         }
 
@@ -36,7 +33,6 @@ mod battle_actions {
         let card_cost = hand_utils::get_creature_cost(ref hand_card, ref board, ref round_effects);
 
         if card_cost > battle.adventurer_energy || hand_card.card_type != CardTypes::CREATURE {
-            println!("NO ENERGY OR NOT CREATURE {} {} {}", card_cost, battle.adventurer_energy, hand_card.card_type);
             return;
         }
 
@@ -92,7 +88,6 @@ mod battle_actions {
         ref global_effects: GlobalEffects
     ) {
         let mut creature = board_utils::get_creature_by_id(ref board, entity_id);
-        println!("{} {} {}", creature.id, creature.resting_round, battle.round);
 
         if (creature.resting_round == battle.round || creature.attack < 1 || creature.health < 1) {
             return;
