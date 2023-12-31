@@ -1,44 +1,76 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/mark-dark.svg">
-  <img alt="Dojo logo" align="right" width="120" src=".github/mark-light.svg">
-</picture>
+# The Cave
 
-<a href="https://twitter.com/dojostarknet">
-<img src="https://img.shields.io/twitter/follow/dojostarknet?style=social"/>
-</a>
-<a href="https://github.com/dojoengine/dojo">
-<img src="https://img.shields.io/github/stars/dojoengine/dojo?style=social"/>
-</a>
+## About the Game
 
-[![discord](https://img.shields.io/badge/join-dojo-green?logo=discord&logoColor=white)](https://discord.gg/PwDa2mKhR4)
-[![Telegram Chat][tg-badge]][tg-url]
+The Cave is a complex fully onchain roguelike deck-building game, coming soon to starknet. Begin your journey by carefully selecting a unique deck of cards comprised of mystical creatures and powerful spells, each with their own unique abilities.
 
-[tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fdojoengine
-[tg-url]: https://t.me/dojoengine
+Venture into the perilous depths of the cave, a treacherous place teeming with monstrous adversaries and enigmatic challenges. With every step and every battle, your strategic prowess and the synergies of your team will be put to the test.
 
-# Dojo Starter: Official Guide
+## Play the demo
 
-The official Dojo Starter guide, the quickest and most streamlined way to get your Dojo Autonomous World up and running. This guide will assist you with the initial setup, from cloning the repository to deploying your world.
+A first look at the cave is available here: https://powerful-vine-409810.ey.r.appspot.com/
 
-Read the full tutorial [here](https://book.dojoengine.org/cairo/hello-dojo.html)
+The demo includes 100 different cards with unique abilities, a draft phase, and a chance to face off against the first monster "Minotaur".
 
----
+The demo is free to play, and you don't need to set up any account.
 
-## Contribution
+### Game Mechanics
 
-This starter project is a constant work in progress and contributions are greatly appreciated!
+## Draw cards
 
-1. **Report a Bug**
+At the beginning of each round, draw until you have six cards in your hand.
+When your deck becomes empty, shuffle your discard pile into your deck.
 
-    - If you think you have encountered a bug, and we should know about it, feel free to report it [here](https://github.com/dojoengine/dojo-starter/issues) and we will take care of it.
+## Play cards from your hand
 
-2. **Request a Feature**
+Summon creatures and cast spells by paying the energy cost of the card.
+You start each round with energy = round, so round_1 = 1 energy, round_2 = 2 energy and so on but (MAX 10 energy).
+Unused energy will not transfer over to the next round.
 
-    - You can also request for a feature [here](https://github.com/dojoengine/dojo-starter/issues), and if it's viable, it will be picked for development.
+## Discard cards from your hand
 
-3. **Create a Pull Request**
-    - It can't get better then this, your pull request will be appreciated by the community.
+You can discard cards from your hand by dragging them to the vortex. Discarding a card cost (1) energy.
+This is useful for freeing up space in your hand, so you draw more cards next round.
 
-For any other questions, feel free to reach out to us [here](https://dojoengine.org/contact).
+## Attack the monster
 
-Happy coding!
+Creatures can attack the monster once each round (except for the round they were summoned).
+When attacking the monster, both the creature and the monster takes damage according to each attack power.
+
+## Enemy monsters
+
+At the end of each round, the monster attacks. It will always target your hero unless it has been taunted by a creature.
+Each monster has unique abilities happening throughout the fight.
+
+## Limits
+
+Hand: Max 6 cards.
+Board: Max 6 creatures.
+Health: Max 30 health.
+Energy: Max 10 energy.
+
+## Abilities explained
+
+Taunt: Taunt the monster for one round, forcing it to attack the creature.
+Shield: The first time this creature is damaged, absorb all damage and remove the shield.
+Charge: The creature can attack the same round it was summoned.
+
+### Blockchain
+
+## Transactions
+
+At the end of each round, all your actions taken for that round are bundled into a transaction, and sent to be validated.
+In the future, only a proof of your actions will be sent to the chain.
+
+## Reward system
+
+Entry fees are split among the top 3 players on the leaderboard of the current season.
+
+## Clients
+
+To ensure the robustness and availability of the game, the contract will include a client fee to encourage developers to build their own clients
+for the game.
+
+## Deployment
+
+Chain - slot
