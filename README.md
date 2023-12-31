@@ -4,13 +4,13 @@
 
 The Cave is a complex fully onchain roguelike deck-building game, coming soon to starknet. Begin your journey by carefully selecting a unique deck of cards comprised of mystical creatures and powerful spells, each with their own unique abilities.
 
-Venture into the perilous depths of the cave, a treacherous place teeming with monstrous adversaries and enigmatic challenges. With every step and every battle, your strategic prowess and the synergies of your team will be put to the test.
+Venture into the perilous depths of The Cave, a treacherous place teeming with monstrous adversaries and enigmatic challenges. With every step and every battle, your strategic prowess and the synergies of your team will be put to the test.
 
 ## Play the demo
 
 A first look at the cave is available here: https://powerful-vine-409810.ey.r.appspot.com/
 
-The demo includes 100 different cards with unique abilities, a draft phase, and a chance to face off against the first monster "Minotaur".
+The demo includes 100 different cards with unique abilities, a draft phase, a chance to face off against the first monster "Minotaur", and a lot of bugs :grimacing:.
 
 The demo is free to play, and you don't need to set up any account.
 
