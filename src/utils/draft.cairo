@@ -11,7 +11,6 @@ mod draft_utils {
         let mut card_3 = 0;
 
         let mut seed = get_entropy(card_count);
-        println!("{}", seed);
 
         card_1 = get_random_card_id(seed);
         seed = LCG(seed);
