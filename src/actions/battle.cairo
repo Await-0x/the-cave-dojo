@@ -89,6 +89,8 @@ mod battle_actions {
                 action_index += 1;
             };
 
+            round_utils::end_of_round_effect(world, ref battle, ref monster, ref hand, ref board, ref round_effects);
+
             if monster.health < 1 {
                 game.in_battle = false;
                 game.battles_won += 1;
@@ -96,8 +98,6 @@ mod battle_actions {
                 set!(world, (game, monster));
                 return;
             }
-
-            round_utils::end_of_round_effect(world, ref battle, ref monster, ref hand, ref board, ref round_effects);
 
             monster_utils::monster_attack(world, ref battle, ref monster, ref board, ref round_effects, ref global_effects);
 

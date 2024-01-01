@@ -15,6 +15,6 @@ mod round_utils {
         ref board: Board,
         ref round_effects: RoundEffects,
     ) {
-        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 10).into() * 3, ref monster, ref hand, ref board, ref round_effects);
+        battle_utils::heal_adventurer(world, ref battle, board_utils::count_card_id(ref board, 71).into() * 3, ref monster, ref hand, ref board, ref round_effects);
     }
 }

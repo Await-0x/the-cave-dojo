@@ -33,7 +33,6 @@ mod summon_utils {
 
         // Charge
         if id == 20 || id == 21 || id == 22 || id == 52 || id == 53 || id == 54 || id == 86 || id == 87 || id == 88 || id == 201 || id == 202 {
-            println!("CHARGE!");
             creature.resting_round = 0;
         }
 
@@ -117,6 +116,7 @@ mod summon_utils {
 
         else if id == 98 {
             let priest_count: u16 = board_utils::count_type(ref board, CardTags::PRIEST).into();
+            println!("PRIESTS {}", priest_count);
             creature.attack += priest_count;
             creature.health += priest_count;
         }

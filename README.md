@@ -8,9 +8,10 @@ Venture into the perilous depths of The Cave, a treacherous place teeming with m
 
 ## Play the demo
 
-A first look at the cave is available here: https://powerful-vine-409810.ey.r.appspot.com/
+A first look at The Cave is available here: https://www.thecave.monster/
 
-The demo includes 100 different cards with unique abilities, a draft phase, a chance to face off against the first monster "Minotaur", and a lot of bugs :grimacing:.
+The demo includes 100 different cards with unique abilities, a draft phase and a chance to face off against the first monster "Minotaur".
+*This is an early demo. Expect bugs, missing animations etc.*
 
 The demo is free to play, and you don't need to set up any account.
 
